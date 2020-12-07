@@ -1,0 +1,28 @@
+{
+  "name": "watch-tuna",
+  "version": "2.1.0",
+  "scripts": {
+    "start": "webpack-dev-server --hot -d",
+    "build": "webpack -p"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.7.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^5.0.1",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-mic": "^12.4.6"
+  }
+}
