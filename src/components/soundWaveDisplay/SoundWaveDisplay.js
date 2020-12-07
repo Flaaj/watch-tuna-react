@@ -1,10 +1,10 @@
 import React, {useState, useEffect, createRef} from "react";
-
+import "./soundWaveDisplay.scss";
 const sampleRate = 44100; // Hz
 // const sampleRate = 16000; // Hz
 const timeWindowDuration = 10; // seconds
 const samplesInWaveArray = sampleRate * timeWindowDuration;
-const renderEveryNthSample = 5;
+const renderEveryNthSample = 56;
 
 const SoundWaveDisplay = ({wave}) => {
     const [canvasRef, _] = useState(createRef());
@@ -21,10 +21,8 @@ const SoundWaveDisplay = ({wave}) => {
             const width = window.innerWidth / samplesInWaveArray;
             wave.forEach((sample, index) => {
                 if (!(index % renderEveryNthSample)) {
-                    path.moveTo(index * width, 400);
-                    path.lineTo(index * width, 400 - sample ** 2 * 10);
-
-                    // console.log(index * width, 100 - sample / 100)
+                    path.moveTo(index * width, 0);
+                    path.lineTo(index * width, sample ** 2 * 100000000);
                 }
             });
             ctx.stroke(path);
@@ -56,7 +54,13 @@ const SoundWaveDisplay = ({wave}) => {
     useEffect(draw);
 
     return (
-        <canvas width={window.innerWidth} height="400" ref={canvasRef}></canvas>
+        <div className="canvas">
+            <canvas
+                width={window.innerWidth}
+                height="400"
+                ref={canvasRef}
+            ></canvas>
+        </div>
     );
 };
 
