@@ -5,10 +5,9 @@ import SoundWaveDisplay from "./components/soundWaveDisplay/SoundWaveDisplay";
 import Recorder from "./components/recorder/Recorder";
 import "./app.scss";
 
-const samplingRate = 44100; // Hz
-
 const App = () => {
     const [soundWave, setSoundWave] = useState([]);
+    const [sampleRate, setSampleRate] = useState(44100);
     // const [time, setTime] = useState(new Date().getTime())
 
     // useEffect(() => {
@@ -18,8 +17,8 @@ const App = () => {
     return (
         <>
             <Header />
-            <SoundWaveDisplay wave={soundWave} />
-            <Recorder setSoundWave={setSoundWave} samplingRate={samplingRate}/>
+            <SoundWaveDisplay wave={soundWave} sampleRate={sampleRate} />
+            <Recorder setSoundWave={setSoundWave} sampleRate={sampleRate} />
         </>
     );
 };

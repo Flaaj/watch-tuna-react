@@ -1,31 +1,73 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
-const sampleRate = 44100; // Hz
-// const sampleRate = 16000; // Hz
-const timeWindowDuration = 10; // seconds
-const samplesInWaveArray = sampleRate * timeWindowDuration;
-const renderEveryNthSample = 56;
 
-const SoundWaveDisplay = ({wave}) => {
-    const [canvasRef, _] = useState(createRef());
+const timeWindowDuration = 10; // seconds
+const renderEveryNthSample = 500;
+
+const SoundWaveDisplay = ({wave, sampleRate}) => {
+    const [canvasRef] = useState(createRef());
     const [ctx, setCtx] = useState(null);
+    const [samplesInWaveArray] = useState(sampleRate * timeWindowDuration);
+
+    const findPeaks = (data, peakWidth) => {
+        const halfWidth = ~~(peakWidth / 2);
+        const peakIndexes = [];
+        for (let i = halfWidth; i < data.length - halfWidth; i++) {
+            if (
+                data.slice(i - halfWidth, i).every((samp) => samp <= data[i]) &&
+                data.slice(i, i + halfWidth).every((samp) => samp <= data[i])
+            ) {
+                peakIndexes.push(i);
+                i += 0.9 * halfWidth;
+            }
+        }
+        const distances = [];
+        for (let i = 0; i < peakIndexes.length - 1; i++) {
+            distances.push(peakIndexes[i + 1] - peakIndexes[i]);
+        }
+        distances.sort();
+        const median =
+            distances.length % 2
+                ? distances[(distances.length + 1) / 2]
+                : distances[distances.length / 2];
+        const filtered = distances.filter(
+            (dist) => dist < median * 1.03 && dist > median * 0.98
+        );
+        const avgDistance = filtered.reduce((a, b) => a + b, 0) / filtered.length;
+        const freq = 48000 / avgDistance
+        const freqOffset = freq - 6;
+        const secondsPerDayOffset = freqOffset / 6 * 60 * 60 * 24;
+        console.log(secondsPerDayOffset);
+        return peakIndexes;
+    };
 
     const draw = () => {
         if (ctx) {
-            ctx.fillStyle = "white";
             ctx.strokeStyle = "blue";
-            ctx.lineWidth = 1;
-            ctx.fillRect(0, 0, window.innerWidth, 400); // clear canvas
+            ctx.lineWidth = 1; //redefine drawing style, because they reset when resizing
+            ctx.clearRect(0, 0, window.innerWidth, 400); // clear canvas
+
+            const peakIndexes = findPeaks(wave, sampleRate / 7);
+
+            const width = window.innerWidth / samplesInWaveArray;
             const path = new Path2D();
             path.moveTo(0, 0);
-            const width = window.innerWidth / samplesInWaveArray;
             wave.forEach((sample, index) => {
-                if (!(index % renderEveryNthSample)) {
+                if (!(index % renderEveryNthSample) && sample > 0) {
                     path.moveTo(index * width, 0);
-                    path.lineTo(index * width, sample ** 2 * 100000000);
+                    path.lineTo(index * width, sample * 10000);
                 }
             });
             ctx.stroke(path);
+
+            ctx.strokeStyle = "green";
+            ctx.lineWidth = 0.5;
+            const peakPath = new Path2D();
+            peakIndexes.forEach((peakI, i) => {
+                peakPath.moveTo(peakI * width, 0);
+                peakPath.lineTo(peakI * width, 400);
+            });
+            ctx.stroke(peakPath);
         }
     };
 
@@ -43,19 +85,15 @@ const SoundWaveDisplay = ({wave}) => {
         //         );
         //     setSoundWave(wave);
         // }, renderEveryNthMilisecond);
-
-        window.addEventListener("resize", () => {
-            setAdaptToDeviceWidth(window.innerWidth / samplesInWaveArray);
-            // draw()
-        });
     };
 
     useEffect(constructor, []);
     useEffect(draw);
 
     return (
-        <div className="canvas">
+        <div className="canvas-container">
             <canvas
+                className="canvas"
                 width={window.innerWidth}
                 height="400"
                 ref={canvasRef}
