@@ -3,18 +3,18 @@ import "./recorder.scss";
 const MicrophoneStream = require("microphone-stream");
 const Fili = require("fili");
 
-const Recorder = ({setSoundWave, sampleRate}) => {
+const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
     const [audioStream, setAudioStream] = useState();
     const [filter, setFilter] = useState();
 
     useEffect(() => {
         const iirCalculator = new Fili.CalcCascades();
-        const iirFilterCoeffs = iirCalculator.highpass({
+        const iirFilterCoeffs = iirCalculator.bandpass({
             order: 12,
             characteristic: "butterworth",
             Fs: sampleRate,
-            Fc: 6000,
-            // BW: 0,
+            Fc: 6200,
+            BW: 1,
             // gain: 1,
         });
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
@@ -35,17 +35,17 @@ const Recorder = ({setSoundWave, sampleRate}) => {
         audioStream && audioStream.stop();
         setSoundWave([]);
 
-        // const AudioContext = window.AudioContext || window.webkitAudioContext;
-        // const audioContext = new AudioContext();
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext({sampleRate});
         // const biquadFilter = audioContext.createBiquadFilter();
         // biquadFilter.type = "bandpass";
-        // biquadFilter.frequency.value = 2000;
+        // biquadFilter.frequency.value = 6000;
         // biquadFilter.Q.value = 300;
         // biquadFilter.connect(audioContext.destination);
 
         const micStream = new MicrophoneStream({
             bufferSize: 16384,
-            // context: audioContext,
+            context: audioContext,
         });
 
         setAudioStream(micStream);
@@ -55,15 +55,6 @@ const Recorder = ({setSoundWave, sampleRate}) => {
                 console.log("mic works");
 
                 micStream.setStream(stream);
-                micStream.on("format", (format) =>
-                    ({
-                        channels: 1,
-                        bitDepth: 32,
-                        sampleRate: sampleRate,
-                        signed: true,
-                        float: true,
-                    })
-                );
                 micStream.on("data", (chunk) => {
                     const raw = MicrophoneStream.toRaw(chunk);
                     const filteredRaw = [];
@@ -72,8 +63,9 @@ const Recorder = ({setSoundWave, sampleRate}) => {
                     );
                     setSoundWave((prev) => {
                         const current = [...prev, ...filteredRaw];
-                        return current.length > sampleRate * 10
-                            ? current.slice(current.length - sampleRate * 10)
+                        // const current = [...prev, ...raw];
+                        return current.length > sampleRate * timeWindow
+                            ? current.slice(current.length - sampleRate * timeWindow)
                             : current;
                     });
                 });
