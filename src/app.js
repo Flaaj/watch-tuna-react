@@ -11,21 +11,41 @@ import calculateOffset from "./functions/calculateOffset";
 const App = () => {
     const [soundWave, setSoundWave] = useState([]);
     const [sampleRate, setSampleRate] = useState(44100); // Hz / samples per second
-    const [timeWindow, setTimeWindow] = useState(10); // s
+    const [timeWindow, setTimeWindow] = useState((4096 * 32) / 44100); // s
     const [targetFreq, setTargerFreq] = useState(6); // Hz / ticks per second
     const [peakIndexes, setPeakIndexes] = useState([]);
+    const [filteredDistances, setFilteredDistances] = useState([]);
     const [secondsPerDayOffset, setSecondsPerDayOffset] = useState(0);
-    // const [time, setTime] = useState(new Date().getTime())
 
     useEffect(() => {
-        setPeakIndexes(findPeaks(soundWave, sampleRate, targetFreq));
+        setPeakIndexes(() => {
+            const peakIndexes = findPeaks(soundWave, sampleRate, targetFreq);
+
+            setSecondsPerDayOffset(
+                calculateOffset(
+                    peakIndexes,
+                    filteredDistances,
+                    setFilteredDistances,
+                    sampleRate,
+                    targetFreq
+                )
+            );
+
+            return peakIndexes;
+        });
     }, [soundWave]);
 
-    useEffect(() => {
-        setSecondsPerDayOffset(
-            calculateOffset(peakIndexes, sampleRate, targetFreq)
-        );
-    }, [peakIndexes]);
+    // useEffect(() => {
+    //     setSecondsPerDayOffset(
+    //         calculateOffset(
+    //             peakIndexes,
+    //             filteredDistances,
+    //             setFilteredDistances,
+    //             sampleRate,
+    //             targetFreq
+    //         )
+    //     );
+    // }, [peakIndexes]);
 
     return (
         <>

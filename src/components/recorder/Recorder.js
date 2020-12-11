@@ -36,7 +36,7 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
         setSoundWave([]);
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioContext = new AudioContext({sampleRate});
+        const audioContext = new AudioContext({sampleRate: sampleRate});
         // const biquadFilter = audioContext.createBiquadFilter();
         // biquadFilter.type = "bandpass";
         // biquadFilter.frequency.value = 6000;
