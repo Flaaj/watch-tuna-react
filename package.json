@@ -22,9 +22,9 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "fili": "^2.0.3",
-    "get-user-media-promise": "^1.1.4",
     "microphone-stream": "^5.1.0",
     "react": "^16.11.0",
-    "react-dom": "^16.11.0"
+    "react-dom": "^16.11.0",
+    "react-router-dom": "^5.2.0"
   }
 }

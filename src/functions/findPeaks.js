@@ -1,5 +1,5 @@
 const findPeaks = (data, sampleRate, targetFreq) => {
-    const peakWidth = ~~(sampleRate / (targetFreq + 1));
+    const peakWidth = ~~((sampleRate / targetFreq) * 0.95);
     const peakIndexes = [];
     for (let i = peakWidth; i < data.length - peakWidth; i++) {
         if (
@@ -7,7 +7,7 @@ const findPeaks = (data, sampleRate, targetFreq) => {
             data.slice(i, i + peakWidth).every((samp) => samp <= data[i])
         ) {
             peakIndexes.push(i);
-            i += 0.98 * peakWidth;
+            i += peakWidth;
         }
     }
     return peakIndexes;

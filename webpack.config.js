@@ -13,7 +13,7 @@ module.exports = {
         port: 3000,
         open: true,
         // host: "192.168.9.111",
-        host: "192.168.42.66",
+        host: "192.168.42.244",
         https: true,
         historyApiFallback: true,
     },

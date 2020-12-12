@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
 
-const renderEveryNthSample = 100;
+const renderEveryNthSample = 256;
 const canvasHeight = 200;
 
 const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
@@ -44,7 +44,7 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
     };
 
     useEffect(constructor, []);
-    useEffect(draw);
+    useEffect(draw, [wave]);
 
     return (
         <div className="canvas-container">

@@ -34,14 +34,14 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
     const startRecording = () => {
         audioStream && audioStream.stop();
         setSoundWave([]);
-
+        console.log("XD", sampleRate)
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext({sampleRate: sampleRate});
         // const biquadFilter = audioContext.createBiquadFilter();
-        // biquadFilter.type = "bandpass";
-        // biquadFilter.frequency.value = 6000;
-        // biquadFilter.Q.value = 300;
         // biquadFilter.connect(audioContext.destination);
+        // biquadFilter.type = "bandpass";
+        // biquadFilter.frequency.value = 6200;
+        // biquadFilter.Q.value = 1000;
 
         const micStream = new MicrophoneStream({
             bufferSize: 16384,
