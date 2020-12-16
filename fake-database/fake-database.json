@@ -1,0 +1,72 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "login": "gitarasiema",
+            "watches": [
+                {
+                    "id": 1,
+                    "brand": "Titus",
+                    "model": "Titomatic",
+                    "name": "Titusik",
+                    "mechanism": "ETA 17 jewels automatic movement",
+                    "tickingFreq": 6
+                },
+                {
+                    "id": 2,
+                    "brand": "Lorus",
+                    "model": "Classic Automatic white dial",
+                    "name": "LORUSIK",
+                    "mechanism": "Seiko Y676-X021 21 jewels automatic",
+                    "tickingFreq": 6
+                },
+                {
+                    "id": 3,
+                    "brand": "Seiko",
+                    "model": "5 1980",
+                    "name": "Golden",
+                    "mechanism": "Seiko Y676-X021 22 jewels automatic",
+                    "tickingFreq": 5
+                },
+                {
+                    "id": 4,
+                    "brand": "Lorus",
+                    "model": "Classic Automatic white dial",
+                    "name": "LORUSIK",
+                    "mechanism": "Seiko Y676-X021 21 jewels automatic",
+                    "tickingFreq": 6
+                },
+                {
+                    "id": 5,
+                    "brand": "Lorus",
+                    "model": "Classic Automatic white dial",
+                    "name": "LORUSIK",
+                    "mechanism": "Seiko Y676-X021 21 jewels automatic",
+                    "tickingFreq": 6
+                },
+                {
+                    "id": 6,
+                    "brand": "Lorus",
+                    "model": "Classic Automatic white dial",
+                    "name": "LORUSIK",
+                    "mechanism": "Seiko Y676-X021 21 jewels automatic",
+                    "tickingFreq": 6
+                }
+            ],
+            "mesurements": [
+                {
+                    "id": 1,
+                    "watchID": 2,
+                    "date": "21.37.2077 16:20:69:1488",
+                    "offset": 21.37
+                },
+                {
+                    "id": 2,
+                    "watchID": 2,
+                    "date": "21.37.2077 16:22:34:0867",
+                    "offset": -5.45
+                }
+            ]
+        }
+    ]
+}

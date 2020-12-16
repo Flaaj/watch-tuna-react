@@ -79,3 +79,23 @@ body {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+.app-container {
+    height: calc(100vh - 170px);
+    overflow-y: scroll;
+    position: relative;
+    font-family: "Open Sans", sans-serif;
+}
+
+.display-selected-watch{
+    display: flex;
+
+    p, strong {
+        display: block;
+        margin: 10px;
+    }
+
+    strong {
+        margin-left: 0;
+    }
+}

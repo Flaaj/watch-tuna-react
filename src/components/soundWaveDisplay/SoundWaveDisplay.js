@@ -1,18 +1,12 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
 
-const renderEveryNthSample = 256;
+const renderEveryNthSample = 256; // number should be a power of 2 to ensure nice redrawing. 
 const canvasHeight = 200;
 
 const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
     const [canvasRef, setCanvasRef] = useState(createRef());
-    const [ctx, setCtx] = useState(null);
-
-    const constructor = () => {
-        const canvas = canvasRef.current;
-        const context = canvas.getContext("2d");
-        setCtx(context);
-    };
+    const [ctx, setCtx] = useState();
 
     const draw = () => {
         if (ctx) {
@@ -43,8 +37,13 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
         }
     };
 
-    useEffect(constructor, []);
-    useEffect(draw, [wave]);
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        setCtx(context);
+    }, []);
+
+    useEffect(draw, [peakIndexes, wave]);
 
     return (
         <div className="canvas-container">

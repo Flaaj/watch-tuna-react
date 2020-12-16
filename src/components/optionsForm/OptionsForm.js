@@ -12,8 +12,8 @@ const OptionsForm = ({setTargetFreq, setSampleRate}) => {
         setSampleRate(value);
     };
     return (
-        <div>
-            <form action="">
+        <div className="options">
+            <form className="options__form" action="">
                 <select
                     name="selectWatchTickingFrequency"
                     id=""
@@ -28,7 +28,7 @@ const OptionsForm = ({setTargetFreq, setSampleRate}) => {
                     name="selectSampleRate"
                     id=""
                     defaultValue={44100}
-                    onClick={handleSampleRateChange}
+                    onChange={handleSampleRateChange}
                 >
                     {sampleRates.map((rate) => (
                         <option key={rate} value={rate}>{rate}Hz</option>

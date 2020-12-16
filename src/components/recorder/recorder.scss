@@ -1,8 +1,11 @@
 .recorder {
-    display: none;
-}
-
-.siema {
-    width: 50vw;
-    height: 200px;
+    display: flex;
+    justify-content: space-evenly;
+    
+    &__btn {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        // float: right;
+    }
 }

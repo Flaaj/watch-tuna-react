@@ -14,8 +14,7 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
             characteristic: "butterworth",
             Fs: sampleRate,
             Fc: 6200,
-            BW: 1,
-            // gain: 1,
+            BW: 500,
         });
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
 
@@ -32,9 +31,9 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
     }, []);
 
     const startRecording = () => {
-        audioStream && audioStream.stop();
+        audioStream && audioStream.stop(); // If previous recording wasnt stopped, do it now
         setSoundWave([]);
-        console.log("XD", sampleRate)
+
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext({sampleRate: sampleRate});
         // const biquadFilter = audioContext.createBiquadFilter();
@@ -47,8 +46,8 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
             bufferSize: 16384,
             context: audioContext,
         });
-
         setAudioStream(micStream);
+        
         navigator.mediaDevices
             .getUserMedia({audio: true, video: false})
             .then((stream) => {
@@ -80,11 +79,11 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
     };
 
     return (
-        <div>
-            <button className="siema" onClick={startRecording}>
+        <div className="recorder">
+            <button className="recorder__btn" onClick={startRecording}>
                 start recording
             </button>
-            <button className="siema" onClick={stopRecording}>
+            <button className="recorder__btn" onClick={stopRecording}>
                 stop recording
             </button>
         </div>
