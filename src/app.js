@@ -52,7 +52,7 @@ const App = () => {
                     {currentWatch && (
                         <div className="display-selected-watch">
                             <p>Measuring: </p>
-                            <strong>{`\n ${currentWatch.brand} "${currentWatch.name}" ${currentWatch.model}`}</strong>
+                            <strong>{`${currentWatch.brand} "${currentWatch.name}" ${currentWatch.model}`}</strong>
                         </div>
                     )}
                     <SoundWaveDisplay

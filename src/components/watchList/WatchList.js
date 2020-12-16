@@ -18,13 +18,13 @@ const WatchList = ({ setCurrentWatch }) => {
 
     const watchFilter = (watch) => {
         const { brand, model, name, mechanism, tickingFreq } = watch;
-        const lowerPhrase = filteringPhrase.toLowerCase();
+        const lowerCasePhrase = filteringPhrase.toLowerCase();
         return (
-            brand.toLowerCase().includes(lowerPhrase) ||
-            model.toLowerCase().includes(lowerPhrase) ||
-            name.toLowerCase().includes(lowerPhrase) ||
-            mechanism.toLowerCase().includes(lowerPhrase) ||
-            tickingFreq.toString().includes(lowerPhrase)
+            brand.toLowerCase().includes(lowerCasePhrase) ||
+            model.toLowerCase().includes(lowerCasePhrase) ||
+            name.toLowerCase().includes(lowerCasePhrase) ||
+            mechanism.toLowerCase().includes(lowerCasePhrase) ||
+            tickingFreq.toString().includes(lowerCasePhrase)
         );
     };
 
@@ -34,6 +34,7 @@ const WatchList = ({ setCurrentWatch }) => {
     const handleFilterBtn = () => {
         setFilterForm((p) => !p);
     };
+
     useEffect(() => {
         getWatches();
     }, []);
@@ -51,6 +52,7 @@ const WatchList = ({ setCurrentWatch }) => {
                     type="text"
                     className="watch-list__input"
                     ref={inputRef}
+                    placeholder="search phrase..."
                     value={filteringPhrase}
                     onChange={handleFilteringPhraseChange}
                 />
