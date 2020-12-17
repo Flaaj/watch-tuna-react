@@ -38,10 +38,10 @@
                 },
                 {
                     "id": 5,
-                    "brand": "Lorus",
-                    "model": "Classic Automatic white dial",
-                    "name": "LORUSIK",
-                    "mechanism": "Seiko Y676-X021 21 jewels automatic",
+                    "brand": "Pobeda",
+                    "model": "Manual",
+                    "name": "Sashka",
+                    "mechanism": "generic manual russian mechanism",
                     "tickingFreq": 6
                 },
                 {

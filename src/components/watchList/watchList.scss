@@ -11,21 +11,25 @@
         background-color: turquoise;
         font-size: 40px;
         color: white;
+
+        &--add-new {
+            transform: translate(50%, -200%);
+            a {
+                text-decoration: none;
+                color: white;
+            }
+        }
+
+        &--filter {
+            right: 0;
+            transform: translate(-70%, -200%);
+            font-size: 20px;
+        }
     }
 
     &__input {
         width: 100%;
         height: 40px;
         padding: 10px;
-    }
-
-    &__add-new-watch {
-        transform: translate(50%, -200%);
-    }
-
-    &__filter-watches {
-        right: 0;
-        transform: translate(-70%, -200%);
-        font-size: 20px;
     }
 }

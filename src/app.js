@@ -75,7 +75,10 @@ const App = () => {
                 </Route>
 
                 <Route path="/watches">
-                    <WatchList setCurrentWatch={setCurrentWatch} />
+                    <WatchList
+                        currentWatch={currentWatch}
+                        setCurrentWatch={setCurrentWatch}
+                    />
                 </Route>
 
                 <Route path="/settings">

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
 
-const renderEveryNthSample = 256; // number should be a power of 2 to ensure nice redrawing. 
+const renderEveryNthSample = 64; // number should be a power of 2 to ensure nice redrawing. 
 const canvasHeight = 200;
 
 const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {

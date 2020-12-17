@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import "./optionsform.scss"
 
 const OptionsForm = ({setTargetFreq, setSampleRate}) => {
     const freqs = [3, 4, 4.5, 5, 5.5, 6, 7, 8, 10, 12, 16];

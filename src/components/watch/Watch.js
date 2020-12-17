@@ -1,6 +1,6 @@
 import React from "react";
 import "./watch.scss";
-const Watch = ({ watchInfo, setCurrentWatch }) => {
+const Watch = ({ watchInfo, currentWatch, setCurrentWatch }) => {
     const { brand, model, name, mechanism, tickingFreq } = watchInfo;
 
     return (
@@ -15,18 +15,33 @@ const Watch = ({ watchInfo, setCurrentWatch }) => {
             </div>
             <div className="watch__container">
                 <h2 className="watch__header">
-                    {brand} {name ? `"${name}"` : undefined} {model}
+                    {brand} {name ? `"${name}" ` : undefined}
+                    {model}
                 </h2>
                 <div className="watch__row">
                     <p>
                         It's {mechanism} ticks {tickingFreq} times per second
                     </p>
-                    <button
-                        className="watch__btn"
-                        onClick={() => setCurrentWatch(watchInfo)}
-                    >
-                        Select
-                    </button>
+                    {watchInfo.id != currentWatch.id ? (
+                        <button
+                            className="watch__btn"
+                            onClick={() => setCurrentWatch(watchInfo)}
+                        >
+                            Select
+                        </button>
+                    ) : (
+                        <button
+                            className="watch__btn"
+                            style={{
+                                backgroundColor: "skyblue",
+                                width: 65,
+                                color: "black",
+                                marginRight: 5,
+                            }}
+                        >
+                            Selected
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

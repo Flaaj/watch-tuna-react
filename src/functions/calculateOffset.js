@@ -11,9 +11,13 @@ const calculateOffset = (
     }
     setFilteredDistances(distances);
     distances.sort();
-    const medianDistance = distances[~~(distances.length / 2)];
-    const filtered = distances.filter(
-        (dist) => medianDistance * 0.98 < dist && dist < medianDistance * 1.02
+    let medianDistance = distances[~~(distances.length / 2)];
+    let filtered = distances.filter(
+        (dist) => medianDistance * 0.95 < dist && dist < medianDistance * 1.05
+    );
+    medianDistance = filtered[~~(filtered.length / 2)];
+    filtered = filtered.filter(
+        (dist) => medianDistance * 0.99 < dist && dist < medianDistance * 1.01
     );
     const avgDistance = filtered.reduce((a, b) => a + b, 0) / filtered.length;
     const freq = sampleRate / avgDistance;

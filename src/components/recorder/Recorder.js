@@ -14,7 +14,7 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
             characteristic: "butterworth",
             Fs: sampleRate,
             Fc: 6200,
-            BW: 500,
+            BW: 1,
         });
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
 

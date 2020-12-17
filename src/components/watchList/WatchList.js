@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import "./watchList.scss";
 import Watch from "../../components/watch/Watch";
+import { Route } from "react-router-dom";
 
 const userID = 1;
 
-const WatchList = ({ setCurrentWatch }) => {
+const WatchList = ({ currentWatch, setCurrentWatch }) => {
     const [watchList, setWatchList] = useState();
     const [filterForm, setFilterForm] = useState(false);
     const [filteringPhrase, setFilteringPhrase] = useState("");
@@ -46,34 +48,43 @@ const WatchList = ({ setCurrentWatch }) => {
     return !watchList ? (
         <h1>loading...</h1>
     ) : (
-        <div className="watch-list">
-            {filterForm && (
-                <input
-                    type="text"
-                    className="watch-list__input"
-                    ref={inputRef}
-                    placeholder="search phrase..."
-                    value={filteringPhrase}
-                    onChange={handleFilteringPhraseChange}
-                />
-            )}
-            {watchList.filter(watchFilter).map((watch) => (
-                <Watch
-                    key={watch.id}
-                    watchInfo={watch}
-                    setCurrentWatch={setCurrentWatch}
-                />
-            ))}
-            <button className="watch-list__add-new-watch watch-list__floating-btn">
-                +
-            </button>
-            <button
-                className="watch-list__filter-watches watch-list__floating-btn"
-                onClick={handleFilterBtn}
-            >
-                <i className="fa fa-search" aria-hidden="true"></i>
-            </button>
-        </div>
+        <>
+            <div className="watch-list">
+                {filterForm && (
+                    <input
+                        type="text"
+                        className="watch-list__input"
+                        ref={inputRef}
+                        placeholder="search phrase..."
+                        value={filteringPhrase}
+                        onChange={handleFilteringPhraseChange}
+                    />
+                )}
+                {watchList.filter(watchFilter).map((watch) => (
+                    <Watch
+                        key={watch.id}
+                        watchInfo={watch}
+                        currentWatch={currentWatch}
+                        setCurrentWatch={setCurrentWatch}
+                    />
+                ))}
+                <button className="watch-list__floating-btn--add-new watch-list__floating-btn">
+                    <Link to="/add">+</Link>
+                </button>
+                <button
+                    className="watch-list__floating-btn--filter watch-list__floating-btn"
+                    onClick={handleFilterBtn}
+                >
+                    <i className="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </div>
+            <Route path="/add">
+                <form action="">
+                    <input type="text" />
+                    <input type="text" />
+                </form>
+            </Route>
+        </>
     );
 };
 
