@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import {Route, BrowserRouter as Router} from "react-router-dom";
 // components:
 import Header from "./components/header/Header";
 import SoundWaveDisplay from "./components/soundWaveDisplay/SoundWaveDisplay";
@@ -23,7 +23,7 @@ const App = () => {
     const [targetFreq, setTargetFreq] = useState(6); // Hz / ticks per second
     const [peakIndexes, setPeakIndexes] = useState([]);
     const [filteredDistances, setFilteredDistances] = useState([]);
-    const [secondsPerDayOffset, setSecondsPerDayOffset] = useState(0);
+    const [secondsPerDayOffset, setSecondsPerDayOffset] = useState([]);
     const [currentWatch, setCurrentWatch] = useState("");
 
     useEffect(() => {
@@ -48,6 +48,7 @@ const App = () => {
         <Router>
             <Header />
             <div className="app-container">
+
                 <Route path="/tune">
                     {currentWatch && (
                         <div className="display-selected-watch">
@@ -61,17 +62,20 @@ const App = () => {
                         timeWindow={timeWindow}
                         peakIndexes={peakIndexes}
                     />
-                    <OffsetDisplay offset={secondsPerDayOffset} />
-                    <OptionsForm
-                        setTargetFreq={setTargetFreq}
-                        setSampleRate={setSampleRate}
-                    />
-                    <Recorder
-                        setSoundWave={setSoundWave}
-                        sampleRate={sampleRate}
-                        timeWindow={timeWindow}
-                        currentWatch={currentWatch}
-                    />
+                    <OffsetDisplay offset={secondsPerDayOffset} targetFreq={targetFreq} />
+                    <div className="row">
+                        <OptionsForm
+                            setTargetFreq={setTargetFreq}
+                            setSampleRate={setSampleRate}
+                        />
+                        <Recorder
+                            setSoundWave={setSoundWave}
+                            sampleRate={sampleRate}
+                            timeWindow={timeWindow}
+                            currentWatch={currentWatch}
+                            setFilteredDistances={setFilteredDistances}
+                        />
+                    </div>
                 </Route>
 
                 <Route path="/watches">
@@ -84,6 +88,7 @@ const App = () => {
                 <Route path="/settings">
                     <Settings />
                 </Route>
+
             </div>
             <BottomMenu />
         </Router>

@@ -1,3 +1,41 @@
 .options {
-    background-color: mediumpurple;
+    // background-color: mediumpurple;
+    width: 33.33%;
+    display: flex;
+    justify-content: center;
+
+    &__form {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background-color: skyblue;
+    }
+    &__select {
+        height: 50%;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        &--tick {
+            margin: auto;
+            transform: translate(0, 7px);
+        }
+
+        &--sample {
+            margin: auto;
+            transform: translate(0, -7px);
+        }
+    }
+
+    &__label {
+        text-align: center;
+        font-size: 12px;
+        color: rgba(black, 0.7);
+
+        &--bottom {
+            border-top: 2px solid grey;
+        }
+    }
 }

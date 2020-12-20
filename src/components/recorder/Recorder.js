@@ -3,7 +3,7 @@ import "./recorder.scss";
 const MicrophoneStream = require("microphone-stream");
 const Fili = require("fili");
 
-const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
+const Recorder = ({setSoundWave, sampleRate, timeWindow, setFilteredDistances}) => {
     const [audioStream, setAudioStream] = useState();
     const [filter, setFilter] = useState();
 
@@ -33,6 +33,7 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
     const startRecording = () => {
         audioStream && audioStream.stop(); // If previous recording wasnt stopped, do it now
         setSoundWave([]);
+        setFilteredDistances([])
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext({sampleRate: sampleRate});
@@ -47,7 +48,7 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
             context: audioContext,
         });
         setAudioStream(micStream);
-        
+
         navigator.mediaDevices
             .getUserMedia({audio: true, video: false})
             .then((stream) => {
@@ -64,7 +65,9 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
                         const current = [...prev, ...filteredRaw];
                         // const current = [...prev, ...raw];
                         return current.length > sampleRate * timeWindow
-                            ? current.slice(current.length - sampleRate * timeWindow)
+                            ? current.slice(
+                                  current.length - sampleRate * timeWindow
+                              )
                             : current;
                     });
                 });
@@ -81,10 +84,12 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow}) => {
     return (
         <div className="recorder">
             <button className="recorder__btn" onClick={startRecording}>
-                start recording
+                <i className="fas fa-microphone"></i>
+                <p className="recorder__label">start recording</p>
             </button>
             <button className="recorder__btn" onClick={stopRecording}>
-                stop recording
+                <i className="fas fa-stop"></i>
+                <p className="recorder__label">stop recording</p>
             </button>
         </div>
     );

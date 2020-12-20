@@ -1,6 +1,6 @@
 .header {
     width: 100vw;
-    height: 100px;
+    height: 90px;
     background-color: skyblue;
     display: flex;
     justify-content: center;
@@ -16,5 +16,6 @@
         text-decoration: none;
         color: grey;
         letter-spacing: -2px;
+        display: flex;
     }
 }

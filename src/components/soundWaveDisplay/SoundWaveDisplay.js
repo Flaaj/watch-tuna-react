@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
 
-const renderEveryNthSample = 64; // number should be a power of 2 to ensure nice redrawing. 
+const renderEveryNthSample = 128; // number should be a power of 2 to ensure nice redrawing. 
 const canvasHeight = 200;
 
 const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
@@ -10,7 +10,7 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
 
     const draw = () => {
         if (ctx) {
-            ctx.clearRect(0, 0, window.innerWidth, canvasHeight); // clear canvas
+            ctx.clearRect(0, 0, window.innerWidth, canvasHeight); // clear canvas before redrawing
             const width = window.innerWidth / sampleRate / timeWindow;
 
             // drawing sound wave:
@@ -25,7 +25,7 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
             });
             ctx.stroke(wavePath);
 
-            // drawing detected peaks:
+            // drawing detected peaks as lines:
             ctx.strokeStyle = "green";
             ctx.lineWidth = 0.5;
             const peakPath = new Path2D();

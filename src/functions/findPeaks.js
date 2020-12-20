@@ -1,5 +1,5 @@
 const findPeaks = (data, sampleRate, targetFreq) => {
-    const peakWidth = ~~((sampleRate / targetFreq) * 0.95);
+    const peakWidth = ~~((sampleRate / targetFreq) * 0.9);
     const peakIndexes = [];
     for (let i = peakWidth; i < data.length - peakWidth; i++) {
         if (
