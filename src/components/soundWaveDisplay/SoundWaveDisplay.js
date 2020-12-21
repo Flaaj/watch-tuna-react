@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
 
-const renderEveryNthSample = 128; // number should be a power of 2 to ensure nice redrawing. 
+const renderEveryNthSample = 32; // number should be a power of 2 to ensure nice redrawing. 
 const canvasHeight = 200;
 
 const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
@@ -19,8 +19,8 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
             const wavePath = new Path2D();
             wave.forEach((sample, index) => {
                 if (!(index % renderEveryNthSample) && sample > 0) {
-                    wavePath.moveTo(index * width, 0);
-                    wavePath.lineTo(index * width, sample * 10000);
+                    // wavePath.moveTo(index * width, 0);
+                    wavePath.lineTo(index * width, sample * 100000);
                 }
             });
             ctx.stroke(wavePath);
@@ -43,7 +43,7 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
         setCtx(context);
     }, []);
 
-    useEffect(draw, [peakIndexes, wave]);
+    useEffect(draw, [peakIndexes]);
 
     return (
         <div className="canvas-container">

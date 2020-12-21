@@ -82,13 +82,18 @@ body {
 
 .app-container {
     height: calc(100vh - 160px);
-    min-height: 100vw * 9 / 16;
     overflow-y: scroll;
     position: relative;
     font-family: "Open Sans", sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    padding-bottom: 70px;
+
+    @media screen and (orientation: landscape) {
+
+        min-height: 500px;
+    }
 }
 
 .display-selected-watch{

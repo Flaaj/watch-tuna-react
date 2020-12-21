@@ -6,29 +6,44 @@ const calculateOffset = (
     targetFreq
 ) => {
     const distances = [...filteredDistances];
+    const targetDistance = ~~(sampleRate / targetFreq);
     for (let i = 0; i < peakIndexes.length - 1; i++) {
-        distances.push(peakIndexes[i + 1] - peakIndexes[i]);
+        const distance = peakIndexes[i + 1] - peakIndexes[i];
+        if (targetDistance * 0.8 < distance && distance < targetDistance * 1.2)
+            distances.push(distance);
     }
     distances.sort();
-    setFilteredDistances(distances);
+    // setFilteredDistances(distances);
 
-    let medianDistance = distances[~~(distances.length / 2)];
-    let filtered = distances.filter(
-        (dist) => medianDistance * 0.99 < dist && dist < medianDistance * 1.01
-    );
+    // let medianDistance = distances[~~(distances.length / 2)];
+    // let filtered = distances.filter(
+    //     (dist) => medianDistance * 0.9995 <= dist && dist <= medianDistance * 1.0005
+    // );
 
-    let avgDistance = filtered.reduce((a, b) => a + b, 0) / filtered.length;
-    let rms =
-        (filtered.reduce((a, b) => a + (b - avgDistance) ** 2, 0) / filtered.length) **
-        0.5;
-    filtered = filtered.filter(
-        (dist) => avgDistance - rms < dist && dist < avgDistance + rms
+    // medianDistance = filtered[~~(filtered.length / 2)];
+    // filtered = filtered.filter(
+    //     (dist) => medianDistance * 0.98 < dist && dist < medianDistance * 1.02
+    // );
+
+    const avg = distances.reduce((a, b) => a + b, 0) / distances.length;
+    const n = distances.length;
+    const rm = distances.reduce((p, c) => p + (c - avg) ** 2, 0);
+    const rms = (rm / n) ** 0.5 || 2;
+    console.log(
+        (rms / sampleRate).toFixed(6),
+        (avg / sampleRate).toFixed(6),
+        distances.length
     );
-    avgDistance = filtered.reduce((a, b) => a + b, 0) / filtered.length;
-    const freq = sampleRate / avgDistance;
+    const filtered = distances.filter(
+        (d) => avg - 3 * rms < d && d < avg + 3 * rms
+    );
+    setFilteredDistances(filtered);
+
+    // const avgDistance = filtered.reduce((a, b) => a + b, 0) / filtered.length;
+    const freq = sampleRate / avg;
     const freqOffset = freq - targetFreq;
-    const secondsPerDayOffset = (freqOffset / targetFreq) * 60 * 60 * 24;
-    return [secondsPerDayOffset, freq]; //, rms, avg];
+    const secondsPerDayOffset = (freqOffset * 60 * 60 * 24) / targetFreq;
+    return [secondsPerDayOffset, freq];
 };
 
 export default calculateOffset;

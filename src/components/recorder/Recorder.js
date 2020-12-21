@@ -3,7 +3,12 @@ import "./recorder.scss";
 const MicrophoneStream = require("microphone-stream");
 const Fili = require("fili");
 
-const Recorder = ({setSoundWave, sampleRate, timeWindow, setFilteredDistances}) => {
+const Recorder = ({
+    setSoundWave,
+    sampleRate,
+    timeWindow,
+    setFilteredDistances,
+}) => {
     const [audioStream, setAudioStream] = useState();
     const [filter, setFilter] = useState();
 
@@ -13,8 +18,8 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow, setFilteredDistances}) 
             order: 12,
             characteristic: "butterworth",
             Fs: sampleRate,
-            Fc: 6200,
-            BW: 100,
+            Fc: 8000,
+            BW: 600,
         });
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
 
@@ -33,18 +38,18 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow, setFilteredDistances}) 
     const startRecording = () => {
         audioStream && audioStream.stop(); // If previous recording wasnt stopped, do it now
         setSoundWave([]);
-        setFilteredDistances([])
+        setFilteredDistances([]);
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext({sampleRate: sampleRate});
         // const biquadFilter = audioContext.createBiquadFilter();
-        // biquadFilter.connect(audioContext.destination);
         // biquadFilter.type = "bandpass";
         // biquadFilter.frequency.value = 6200;
         // biquadFilter.Q.value = 1000;
+        // biquadFilter.connect(audioContext.destination);
 
         const micStream = new MicrophoneStream({
-            bufferSize: 16384,
+            bufferSize: 16384 / 4,
             context: audioContext,
         });
         setAudioStream(micStream);
@@ -57,11 +62,8 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow, setFilteredDistances}) 
                 micStream.setStream(stream);
                 micStream.on("data", (chunk) => {
                     const raw = MicrophoneStream.toRaw(chunk);
-                    const filteredRaw = [];
-                    raw.forEach((r) =>
-                        filteredRaw.push(filter.singleStep(r * 100))
-                    );
-                    // setSoundWave(filteredRaw)
+                    const filteredRaw = filter.multiStep(raw);
+                    // raw.forEach((r) => filteredRaw.push(filter.singleStep(r)));
                     setSoundWave((prev) => {
                         const current = [...prev, ...filteredRaw];
                         return current.length > sampleRate * timeWindow

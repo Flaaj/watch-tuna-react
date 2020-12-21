@@ -48,7 +48,6 @@ const App = () => {
         <Router>
             <Header />
             <div className="app-container">
-
                 <Route path="/tune">
                     {currentWatch && (
                         <div className="display-selected-watch">
@@ -62,7 +61,10 @@ const App = () => {
                         timeWindow={timeWindow}
                         peakIndexes={peakIndexes}
                     />
-                    <OffsetDisplay offset={secondsPerDayOffset} targetFreq={targetFreq} />
+                    <OffsetDisplay
+                        offset={secondsPerDayOffset}
+                        targetFreq={targetFreq}
+                    />
                     <div className="row">
                         <OptionsForm
                             setTargetFreq={setTargetFreq}
@@ -88,7 +90,6 @@ const App = () => {
                 <Route path="/settings">
                     <Settings />
                 </Route>
-
             </div>
             <BottomMenu />
         </Router>
