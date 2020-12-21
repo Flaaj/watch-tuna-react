@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <div className="header">
             <Link to="/">
-                <ReactSVG src="/src/assets/vector_tuna.svg" />
+                <ReactSVG src="./src/assets/vector_tuna.svg" />
                 <span>Watch Tuna</span>
             </Link>
         </div>

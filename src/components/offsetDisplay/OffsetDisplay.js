@@ -24,6 +24,22 @@ const OffsetDisplay = ({offset, targetFreq}) => {
                         : "-"}
                 </div>
             </div>
+            <div className="row">
+                <span>rms: </span>
+                <div>
+                    {offset && offset[2]
+                        ? offset[2].toFixed(3)
+                        : "-"}
+                </div>
+            </div>
+            <div className="row">
+                <span>avg: </span>
+                <div>
+                    {offset && offset[3]
+                        ? offset[3].toFixed(3)
+                        : "-"}
+                </div>
+            </div>
         </div>
     );
 };

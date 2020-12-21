@@ -14,7 +14,7 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow, setFilteredDistances}) 
             characteristic: "butterworth",
             Fs: sampleRate,
             Fc: 6200,
-            BW: 1,
+            BW: 100,
         });
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
 
@@ -61,9 +61,9 @@ const Recorder = ({setSoundWave, sampleRate, timeWindow, setFilteredDistances}) 
                     raw.forEach((r) =>
                         filteredRaw.push(filter.singleStep(r * 100))
                     );
+                    // setSoundWave(filteredRaw)
                     setSoundWave((prev) => {
                         const current = [...prev, ...filteredRaw];
-                        // const current = [...prev, ...raw];
                         return current.length > sampleRate * timeWindow
                             ? current.slice(
                                   current.length - sampleRate * timeWindow
