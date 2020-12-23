@@ -18,8 +18,8 @@ const Recorder = ({
             order: 12,
             characteristic: "butterworth",
             Fs: sampleRate,
-            Fc: 8000,
-            BW: 600,
+            Fc: 6200,
+            BW: 1,
         });
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
 
@@ -33,7 +33,7 @@ const Recorder = ({
         // const firFilter = new Fili.FirFilter(firFilterCoeffs);
 
         setFilter(iirFilter);
-    }, []);
+    }, [sampleRate]);
 
     const startRecording = () => {
         audioStream && audioStream.stop(); // If previous recording wasnt stopped, do it now
@@ -45,11 +45,11 @@ const Recorder = ({
         // const biquadFilter = audioContext.createBiquadFilter();
         // biquadFilter.type = "bandpass";
         // biquadFilter.frequency.value = 6200;
-        // biquadFilter.Q.value = 1000;
+        // biquadFilter.Q.value = 40;
         // biquadFilter.connect(audioContext.destination);
 
         const micStream = new MicrophoneStream({
-            bufferSize: 16384 / 4,
+            bufferSize: 16384 / 2,
             context: audioContext,
         });
         setAudioStream(micStream);

@@ -28,12 +28,7 @@ const calculateOffset = (
     const avg = distances.reduce((a, b) => a + b, 0) / distances.length;
     const n = distances.length;
     const rm = distances.reduce((p, c) => p + (c - avg) ** 2, 0);
-    const rms = (rm / n) ** 0.5 || 2;
-    console.log(
-        (rms / sampleRate).toFixed(6),
-        (avg / sampleRate).toFixed(6),
-        distances.length
-    );
+    const rms = (rm / n) ** 0.5;
     const filtered = distances.filter(
         (d) => avg - 3 * rms < d && d < avg + 3 * rms
     );

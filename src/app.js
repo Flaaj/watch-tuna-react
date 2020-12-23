@@ -19,7 +19,7 @@ import calculateOffset from "./functions/calculateOffset";
 const App = () => {
     const [soundWave, setSoundWave] = useState([]);
     const [sampleRate, setSampleRate] = useState(44100); // Hz / samples per second
-    const [timeWindow, setTimeWindow] = useState((16384 * 8) / 44100); // s
+    const [timeWindow, setTimeWindow] = useState((16384 * 32) / 44100); // s
     const [targetFreq, setTargetFreq] = useState(6); // Hz / ticks per second
     const [peakIndexes, setPeakIndexes] = useState([]);
     const [filteredDistances, setFilteredDistances] = useState([]);
