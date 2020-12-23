@@ -21,17 +21,8 @@ const Recorder = ({
             Fc: 6200,
             BW: 1,
         });
+
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
-
-        // const firCalculator = new Fili.FirCoeffs();
-        // const firFilterCoeffs = firCalculator.bandpass({
-        //     order: 500,
-        //     Fs: sampleRate,
-        //     F1: 6000,
-        //     F2: 6600,
-        // });
-        // const firFilter = new Fili.FirFilter(firFilterCoeffs);
-
         setFilter(iirFilter);
     }, [sampleRate]);
 
@@ -42,11 +33,6 @@ const Recorder = ({
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext({sampleRate: sampleRate});
-        // const biquadFilter = audioContext.createBiquadFilter();
-        // biquadFilter.type = "bandpass";
-        // biquadFilter.frequency.value = 6200;
-        // biquadFilter.Q.value = 40;
-        // biquadFilter.connect(audioContext.destination);
 
         const micStream = new MicrophoneStream({
             bufferSize: 16384 / 2,
@@ -63,7 +49,6 @@ const Recorder = ({
                 micStream.on("data", (chunk) => {
                     const raw = MicrophoneStream.toRaw(chunk);
                     const filteredRaw = filter.multiStep(raw);
-                    // raw.forEach((r) => filteredRaw.push(filter.singleStep(r)));
                     setSoundWave((prev) => {
                         const current = [...prev, ...filteredRaw];
                         return current.length > sampleRate * timeWindow

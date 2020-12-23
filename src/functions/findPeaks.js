@@ -1,6 +1,6 @@
 const findPeaks = (data, sampleRate, targetFreq) => {
-    const sliceLen = ~~(sampleRate / targetFreq / 30);
-    const peakWidth = ~~((sampleRate / targetFreq) * 0.9 - sliceLen);
+    const sliceLen = ~~(sampleRate / targetFreq / 16);
+    const peakWidth = ~~((sampleRate / targetFreq) * 0.9 - sliceLen / 2);
     const peakIndexes = [];
 
     for (let i = peakWidth; i < data.length - peakWidth; i += sliceLen) {

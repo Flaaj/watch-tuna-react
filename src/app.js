@@ -10,11 +10,18 @@ import OptionsForm from "./components/optionsForm/OptionsForm";
 import BottomMenu from "./components/bottomMenu/BottomMenu";
 import Settings from "./components/settings/Settings";
 import WatchList from "./components/watchList/WatchList";
+import LandingScreen from "./components/landingScreen/LandingScreen";
 // styles:
 import "./app.scss";
 // functions:
 import findPeaks from "./functions/findPeaks";
 import calculateOffset from "./functions/calculateOffset";
+// firebase:
+import firebase from "firebase/app";
+import "firebase/auth";
+// import "firebase/firestore";
+// import "firebase/analytics";
+import "firebase/database";
 
 const App = () => {
     const [soundWave, setSoundWave] = useState([]);
@@ -25,6 +32,34 @@ const App = () => {
     const [filteredDistances, setFilteredDistances] = useState([]);
     const [secondsPerDayOffset, setSecondsPerDayOffset] = useState([]);
     const [currentWatch, setCurrentWatch] = useState("");
+    const [database, setDatabase] = useState();
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        const firebaseConfig = {
+            apiKey: "AIzaSyCRjMs-2P66isqtPhRT-m0RT5o5XS8zyF4",
+            authDomain: "watch-tuna.firebaseapp.com",
+            databaseURL:
+                "https://watch-tuna-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "watch-tuna",
+            storageBucket: "watch-tuna.appspot.com",
+            messagingSenderId: "826979927095",
+            appId: "1:826979927095:web:784b37323b1b128d366bb2",
+            // measurementId: "G-79T3MHZ7BG",
+        };
+        firebase.initializeApp(firebaseConfig);
+        // firebase.analytics();
+        setDatabase(firebase.database());
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                setUser(user);
+                console.log(user)
+            } else {
+                // No user is signed in.
+            }
+        });
+    }, []);
 
     useEffect(() => {
         setPeakIndexes(() => {
@@ -48,7 +83,14 @@ const App = () => {
         <Router>
             <Header />
             <div className="app-container">
-                <Route path="/tune">
+                <Route exact path="/">
+                    <LandingScreen
+                        user={user}
+                        setUser={setUser}
+                        firebase={firebase}
+                    />
+                </Route>
+                <Route exact path="/tune">
                     {currentWatch && (
                         <div className="display-selected-watch">
                             <p>Measuring: </p>
@@ -80,14 +122,14 @@ const App = () => {
                     </div>
                 </Route>
 
-                <Route path="/watches">
+                <Route exact path="/watches">
                     <WatchList
                         currentWatch={currentWatch}
                         setCurrentWatch={setCurrentWatch}
                     />
                 </Route>
 
-                <Route path="/settings">
+                <Route exact path="/settings">
                     <Settings />
                 </Route>
             </div>
