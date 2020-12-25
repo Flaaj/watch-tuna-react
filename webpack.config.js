@@ -12,7 +12,7 @@ module.exports = {
         compress: true,
         port: 3001,
         open: true,
-        // host: "192.168.9.111",
+        host: "192.168.9.111",
         // host: "192.168.42.59",
         https: true,
         historyApiFallback: true,

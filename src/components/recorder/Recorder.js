@@ -50,7 +50,10 @@ const Recorder = ({
                     const raw = MicrophoneStream.toRaw(chunk);
                     const filteredRaw = filter.multiStep(raw);
                     setSoundWave((prev) => {
-                        const current = [...prev, ...filteredRaw];
+                        const current = [
+                            ...prev,
+                            ...filteredRaw.map((d) => Math.abs(d)),
+                        ];
                         return current.length > sampleRate * timeWindow
                             ? current.slice(
                                   current.length - sampleRate * timeWindow

@@ -18,7 +18,7 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
             ctx.lineWidth = 1;
             const wavePath = new Path2D();
             wave.forEach((sample, index) => {
-                if (!(index % renderEveryNthSample) && sample > 0) {
+                if (!(index % renderEveryNthSample)) {
                     // wavePath.moveTo(index * width, 0);
                     wavePath.lineTo(index * width, sample * 100000);
                 }

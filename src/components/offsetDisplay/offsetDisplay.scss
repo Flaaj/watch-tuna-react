@@ -1,9 +1,11 @@
 .offset-display {
     width: 100%;
     padding: 0 10%;
-
+    
     .row {
         width: 100%;
+        max-width: 400px;
+        margin: auto;
         display: flex;
         justify-content: space-between;
     }
