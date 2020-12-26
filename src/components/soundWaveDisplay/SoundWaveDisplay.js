@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
 
-const renderEveryNthSample = 8; // number should be a power of 2 to ensure nice redrawing. 
+const renderEveryNthSample = 128; // number should be a power of 2 to ensure nice redrawing. 
 const canvasHeight = 200;
 
 const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
@@ -18,19 +18,19 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
             ctx.lineWidth = 1;
             const wavePath = new Path2D();
             wave.forEach((sample, index) => {
-                if (!(index % renderEveryNthSample)) {
+                if (!(index % renderEveryNthSample) || peakIndexes.includes(index)) {
                     // wavePath.moveTo(index * width, 0);
-                    wavePath.lineTo(index * width, sample * 100000);
+                    wavePath.lineTo(index * width, Math.min(sample * 100000, canvasHeight - 20));
                 }
             });
             ctx.stroke(wavePath);
 
             // drawing detected peaks as lines:
-            ctx.strokeStyle = "green";
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = "grey";
+            ctx.lineWidth = 1;
             const peakPath = new Path2D();
             peakIndexes.forEach((peak) => {
-                peakPath.moveTo(peak * width, 0);
+                peakPath.moveTo(peak * width, Math.min(wave[peak] * 100000 + 10, canvasHeight - 10));
                 peakPath.lineTo(peak * width, canvasHeight);
             });
             ctx.stroke(peakPath);

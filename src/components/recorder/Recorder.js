@@ -18,8 +18,8 @@ const Recorder = ({
             order: 12,
             characteristic: "butterworth",
             Fs: sampleRate,
-            Fc: 6200,
-            BW: 1,
+            Fc: 6500,
+            BW: 10,  //** FILTER BANDWIDTH **//
         });
 
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
@@ -28,14 +28,14 @@ const Recorder = ({
 
     const startRecording = () => {
         audioStream && audioStream.stop(); // If previous recording wasnt stopped, do it now
-        setSoundWave([]);
+        setSoundWave([]);   
         setFilteredDistances([]);
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext({sampleRate: sampleRate});
 
         const micStream = new MicrophoneStream({
-            bufferSize: 16384 / 2,
+            bufferSize: 16384 / 2, //** BUFFER SIZE **//
             context: audioContext,
         });
         setAudioStream(micStream);
@@ -52,7 +52,7 @@ const Recorder = ({
                     setSoundWave((prev) => {
                         const current = [
                             ...prev,
-                            ...filteredRaw.map((d) => Math.abs(d)),
+                            ...filteredRaw.map((d) => Math.abs(d)), //** TURN FILTERING OFF **//
                         ];
                         return current.length > sampleRate * timeWindow
                             ? current.slice(
