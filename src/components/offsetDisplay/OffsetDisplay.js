@@ -1,12 +1,39 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import "./offsetDisplay.scss";
 
-const OffsetDisplay = ({offset, targetFreq}) => {
+const OffsetDisplay = ({offset, targetFreq, user, firebase, currentWatch}) => {
+    const siema = () => {
+        const date = new Date().toUTCString();
+        firebase
+            .database()
+            .ref(
+                "users/" +
+                    user.uid +
+                    "/watches/" +
+                    currentWatch.watchID +
+                    "/measurements/"
+            )
+            .push({date, type: "recorded", result: offset[0]});
+    };
     return (
         <div className="offset-display">
+            {currentWatch && (
+                <div className="row">
+                    <button
+                        className="offset-display__save-btn"
+                        onClick={siema}
+                    >
+                        Save measurement to database
+                    </button>
+                </div>
+            )}
             <div className="row">
                 <span>Target frequency:</span>
-                <div>{targetFreq ? targetFreq + "Hz" : "-"}</div>
+                <div>
+                    {targetFreq
+                        ? targetFreq * 3600 + " BPH / " + targetFreq + "Hz"
+                        : "-"}
+                </div>
             </div>
             <div className="row">
                 <span>Measured frequency: </span>

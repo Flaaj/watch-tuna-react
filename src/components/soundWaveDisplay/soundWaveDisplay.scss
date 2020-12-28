@@ -3,6 +3,7 @@
     margin: 30px 0;
     // box-shadow: 0 0 10px 5px grey
     // background-color: grey;
+    display: flex;
 }
 
 .canvas {
@@ -10,4 +11,5 @@
     // margin-top: 5px;
     border-bottom: 1px solid grey;
     border-top: 1px solid blue;
+    flex-shrink: 1
 }

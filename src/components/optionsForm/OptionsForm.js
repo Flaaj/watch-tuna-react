@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import "./optionsForm.scss";
 
-const OptionsForm = ({setTargetFreq, setSampleRate}) => {
-    const freqs = [2.5, 3, 4, 4.5, 5, 5.5, 6, 7, 8, 10, 12, 16];
+const OptionsForm = ({setTargetFreq, setSampleRate, targetFreq}) => {
+    const freqs = [1, 2, 2.5, 3, 4, 4.5, 5, 5.5, 6, 8, 10, 12, 16];
     const sampleRates = [
         44100,
         16000,
@@ -12,13 +12,14 @@ const OptionsForm = ({setTargetFreq, setSampleRate}) => {
         35000,
         40000,
         48000,
+        75000,
+        100000
     ];
 
     const handleFrequencyChange = ({target: {value}}) => {
         setTargetFreq(value);
     };
     const handleSampleRateChange = ({target: {value}}) => {
-        console.log(value);
         setSampleRate(value);
     };
     return (
@@ -28,7 +29,7 @@ const OptionsForm = ({setTargetFreq, setSampleRate}) => {
                     className="options__select options__select--tick"
                     name="selectWatchTickingFrequency"
                     id="selectWatchTickingFrequency"
-                    defaultValue={6}
+                    defaultValue={targetFreq}
                     onChange={handleFrequencyChange}
                 >
                     {freqs.map((freq) => (

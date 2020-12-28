@@ -26,14 +26,16 @@ import "firebase/database";
 const App = () => {
     const [soundWave, setSoundWave] = useState([]);
     const [sampleRate, setSampleRate] = useState(44100); // Hz / samples per second
-    const [timeWindow, setTimeWindow] = useState((16384 * 16) / sampleRate); // s
     const [targetFreq, setTargetFreq] = useState(6); // Hz / ticks per second
     const [peakIndexes, setPeakIndexes] = useState([]);
-    const [filteredDistances, setFilteredDistances] = useState([]);
     const [secondsPerDayOffset, setSecondsPerDayOffset] = useState([]);
     const [currentWatch, setCurrentWatch] = useState("");
-    const [database, setDatabase] = useState();
+    const [initialized, setInitialized] = useState(false);
     const [user, setUser] = useState();
+
+    useEffect(() => {
+        setTargetFreq(currentWatch.freq || 6);
+    }, [currentWatch]);
 
     useEffect(() => {
         const firebaseConfig = {
@@ -48,13 +50,12 @@ const App = () => {
             // measurementId: "G-79T3MHZ7BG",
         };
         firebase.initializeApp(firebaseConfig);
-        // firebase.analytics();
-        setDatabase(firebase.database());
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 setUser(user);
-                console.log(user)
+                setInitialized(true);
+                // console.log(user);
             } else {
                 // No user is signed in.
             }
@@ -63,19 +64,20 @@ const App = () => {
 
     useEffect(() => {
         setPeakIndexes(() => {
-            const peakIndexes = findPeaks(soundWave, sampleRate, targetFreq);
+            const newPeakIndexes = [
+                ...peakIndexes,
+                ...findPeaks(soundWave, sampleRate, targetFreq, peakIndexes),
+            ];
 
             setSecondsPerDayOffset(
                 calculateOffset(
-                    peakIndexes,
-                    filteredDistances,
-                    setFilteredDistances,
+                    newPeakIndexes,
                     sampleRate,
                     targetFreq
                 )
             );
 
-            return peakIndexes;
+            return newPeakIndexes;
         });
     }, [soundWave]);
 
@@ -98,35 +100,41 @@ const App = () => {
                         </div>
                     )}
                     <SoundWaveDisplay
-                        wave={soundWave}
+                        soundWave={soundWave}
                         sampleRate={sampleRate}
-                        timeWindow={timeWindow}
                         peakIndexes={peakIndexes}
                     />
                     <OffsetDisplay
                         offset={secondsPerDayOffset}
                         targetFreq={targetFreq}
+                        firebase={firebase}
+                        user={user}
+                        currentWatch={currentWatch}
                     />
                     <div className="row">
                         <OptionsForm
                             setTargetFreq={setTargetFreq}
                             setSampleRate={setSampleRate}
+                            targetFreq={targetFreq}
                         />
                         <Recorder
                             setSoundWave={setSoundWave}
                             sampleRate={sampleRate}
-                            timeWindow={timeWindow}
                             currentWatch={currentWatch}
-                            setFilteredDistances={setFilteredDistances}
+                            setPeakIndexes={setPeakIndexes}
                         />
                     </div>
                 </Route>
 
                 <Route exact path="/watches">
-                    <WatchList
-                        currentWatch={currentWatch}
-                        setCurrentWatch={setCurrentWatch}
-                    />
+                    {initialized && (
+                        <WatchList
+                            user={user}
+                            firebase={firebase}
+                            currentWatch={currentWatch}
+                            setCurrentWatch={setCurrentWatch}
+                        />
+                    )}
                 </Route>
 
                 <Route exact path="/settings">

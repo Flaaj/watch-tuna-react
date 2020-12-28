@@ -6,8 +6,8 @@ const Fili = require("fili");
 const Recorder = ({
     setSoundWave,
     sampleRate,
-    timeWindow,
     setFilteredDistances,
+    setPeakIndexes,
 }) => {
     const [audioStream, setAudioStream] = useState();
     const [filter, setFilter] = useState();
@@ -18,8 +18,8 @@ const Recorder = ({
             order: 12,
             characteristic: "butterworth",
             Fs: sampleRate,
-            Fc: 6500,
-            BW: 10,  //** FILTER BANDWIDTH **//
+            Fc: 6400,
+            BW: 1, //** FILTER BANDWIDTH **//
         });
 
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
@@ -28,14 +28,23 @@ const Recorder = ({
 
     const startRecording = () => {
         audioStream && audioStream.stop(); // If previous recording wasnt stopped, do it now
-        setSoundWave([]);   
-        setFilteredDistances([]);
+        setSoundWave([]);
+        setPeakIndexes([]);
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext({sampleRate: sampleRate});
 
+        const bufferSize =
+            sampleRate > 50000
+                ? 16384
+                : sampleRate > 30000
+                ? 16384 / 2
+                : sampleRate > 20000
+                ? 16384 / 8
+                : 16384 / 16;
+
         const micStream = new MicrophoneStream({
-            bufferSize: 16384 / 2, //** BUFFER SIZE **//
+            bufferSize, //** BUFFER SIZE **//
             context: audioContext,
         });
         setAudioStream(micStream);
@@ -52,13 +61,10 @@ const Recorder = ({
                     setSoundWave((prev) => {
                         const current = [
                             ...prev,
-                            ...filteredRaw.map((d) => Math.abs(d)), //** TURN FILTERING OFF **//
+                            ...raw, //** TURN FILTERING OFF **//
                         ];
-                        return current.length > sampleRate * timeWindow
-                            ? current.slice(
-                                  current.length - sampleRate * timeWindow
-                              )
-                            : current;
+
+                        return current;
                     });
                 });
             })

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 const LandingScreen = ({user, setUser, firebase}) => {
     const [signUpEmail, setSignUpEmail] = useState("");
@@ -9,6 +9,14 @@ const LandingScreen = ({user, setUser, firebase}) => {
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then((user) => {
+                firebase
+                    .database()
+                    .ref("users/" + user.user.uid)
+                    .set({
+                        email,
+                        uid: user.user.uid,
+                        watches: [],
+                    });
                 logIn(email, password);
             })
             .catch((error) => {
@@ -27,7 +35,7 @@ const LandingScreen = ({user, setUser, firebase}) => {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then((user) => {
-                setUser(firebase.auth().currentUser);
+                setUser(user.user);
             })
             .catch((error) => {
                 var errorCode = error.code;
@@ -88,7 +96,7 @@ const LandingScreen = ({user, setUser, firebase}) => {
     ) : (
         <div>
             <h2>welcome {user.email.split("@")[0]}</h2>
-            <button onClick={logOut()}>Log out</button>
+            <button onClick={logOut}>Log out</button>
         </div>
     );
 };

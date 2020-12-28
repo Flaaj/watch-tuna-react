@@ -1,12 +1,29 @@
 import React, {useState, useEffect, createRef} from "react";
 import "./soundWaveDisplay.scss";
 
-const renderEveryNthSample = 128; // number should be a power of 2 to ensure nice redrawing. 
+// number should be a power of 2 to ensure nice redrawing.
 const canvasHeight = 200;
 
-const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
+const SoundWaveDisplay = ({soundWave, sampleRate, peakIndexes}) => {
     const [canvasRef, setCanvasRef] = useState(createRef());
     const [ctx, setCtx] = useState();
+
+    const renderEveryNthSample =
+        sampleRate > 50000
+            ? 1024
+            : sampleRate >= 40000
+            ? 128
+            : sampleRate > 20000
+            ? 64
+            : 32;
+
+    const timeWindow = ~~((16384 * 16) / 44100);
+    const len = sampleRate * timeWindow;
+    const cutOffLength = soundWave.length > len ? soundWave.length - len : 0;
+    const wave = soundWave.slice(cutOffLength);
+    const indexes = peakIndexes
+        .filter((p) => p > cutOffLength)
+        .map((p) => p - cutOffLength);
 
     const draw = () => {
         if (ctx) {
@@ -18,9 +35,14 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
             ctx.lineWidth = 1;
             const wavePath = new Path2D();
             wave.forEach((sample, index) => {
-                if (!(index % renderEveryNthSample) || peakIndexes.includes(index)) {
-                    // wavePath.moveTo(index * width, 0);
-                    wavePath.lineTo(index * width, Math.min(sample * 100000, canvasHeight - 20));
+                if (
+                    !(index % renderEveryNthSample) ||
+                    indexes.includes(index)
+                ) {
+                    wavePath.lineTo(
+                        index * width,
+                        Math.min(sample * 100000, canvasHeight - 20)
+                    );
                 }
             });
             ctx.stroke(wavePath);
@@ -29,8 +51,11 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
             ctx.strokeStyle = "grey";
             ctx.lineWidth = 1;
             const peakPath = new Path2D();
-            peakIndexes.forEach((peak) => {
-                peakPath.moveTo(peak * width, Math.min(wave[peak] * 100000 + 10, canvasHeight - 10));
+            indexes.forEach((peak) => {
+                peakPath.moveTo(
+                    peak * width,
+                    Math.min(wave[peak] * 100000 + 10, canvasHeight - 10)
+                );
                 peakPath.lineTo(peak * width, canvasHeight);
             });
             ctx.stroke(peakPath);
@@ -43,7 +68,7 @@ const SoundWaveDisplay = ({wave, sampleRate, timeWindow, peakIndexes}) => {
         setCtx(context);
     }, []);
 
-    useEffect(draw, [peakIndexes]);
+    useEffect(draw, [indexes]);
 
     return (
         <div className="canvas-container">
