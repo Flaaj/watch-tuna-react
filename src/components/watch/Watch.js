@@ -9,9 +9,6 @@ const Watch = ({watchInfo, currentWatch, setCurrentWatch}) => {
         measurements.push(watchInfo.measurements[id]);
     }
 
-    useEffect(() => {
-        console.log(expanded);
-    }, [expanded]);
     return (
         <>
             <div className="watch">

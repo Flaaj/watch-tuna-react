@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Link, useHistory} from "react-router-dom";
+import "./addNewWatch.scss"
 
 const AddNewWatch = ({firebase, user, setAdding}) => {
     const [brand, setBrand] = useState("");
@@ -17,7 +18,6 @@ const AddNewWatch = ({firebase, user, setAdding}) => {
             mechanism,
             freq,
             text,
-            // measurements: [],
         };
 
         firebase
@@ -30,7 +30,7 @@ const AddNewWatch = ({firebase, user, setAdding}) => {
 
     return (
         <>
-            <form onSubmit={submitWatch}>
+            <form className="add-watch" onSubmit={submitWatch}>
                 <div className="row">
                     <label htmlFor="brand">Brand: </label>
                     <input
@@ -74,6 +74,7 @@ const AddNewWatch = ({firebase, user, setAdding}) => {
                         type="text"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
+                        rows="4"
                     />
                 </div>
                 <div className="row">

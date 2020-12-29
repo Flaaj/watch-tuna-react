@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import {Route, BrowserRouter as Router} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 // components:
 import Header from "./components/header/Header";
 import SoundWaveDisplay from "./components/soundWaveDisplay/SoundWaveDisplay";
@@ -70,11 +70,7 @@ const App = () => {
             ];
 
             setSecondsPerDayOffset(
-                calculateOffset(
-                    newPeakIndexes,
-                    sampleRate,
-                    targetFreq
-                )
+                calculateOffset(newPeakIndexes, sampleRate, targetFreq)
             );
 
             return newPeakIndexes;
@@ -96,7 +92,13 @@ const App = () => {
                     {currentWatch && (
                         <div className="display-selected-watch">
                             <p>Measuring: </p>
-                            <strong>{`${currentWatch.brand} "${currentWatch.name}" ${currentWatch.model}`}</strong>
+                            <strong>
+                                {currentWatch.brand}{" "}
+                                {currentWatch.name
+                                    ? '"' + currentWatch.name + '"'
+                                    : undefined}{" "}
+                                {currentWatch.model}
+                            </strong>
                         </div>
                     )}
                     <SoundWaveDisplay

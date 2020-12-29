@@ -1,0 +1,32 @@
+.add-watch {
+    width: 400px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    margin: auto;
+    max-height: 400px;
+
+    .row {
+        width: 100%;
+        justify-content: space-between;
+        padding: 10px 30px;
+        
+    }
+
+    label {
+        text-transform: uppercase;
+    }
+
+    input, textarea {
+        width: 200px;
+        border: 1px solid grey;
+        border-radius: 5px;
+    }
+
+    button {
+        // width: 0
+        margin: 30px;
+    }
+
+}

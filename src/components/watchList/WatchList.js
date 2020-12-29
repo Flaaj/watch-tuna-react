@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./watchList.scss";
 import Watch from "../../components/watch/Watch";
 import AddNewWatch from "../../components/addNewWatch/AddNewWatch";
-import {Route, Link, BrowserRouter as Router} from "react-router-dom";
+import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 
-const WatchList = ({user, firebase, currentWatch, setCurrentWatch}) => {
+const WatchList = ({ user, firebase, currentWatch, setCurrentWatch }) => {
     const [watchList, setWatchList] = useState([]);
     const [filterForm, setFilterForm] = useState(false);
     const [filteringPhrase, setFilteringPhrase] = useState("");
@@ -19,14 +19,17 @@ const WatchList = ({user, firebase, currentWatch, setCurrentWatch}) => {
             .once("value")
             .then((snapshot) => {
                 for (let watchID in snapshot.val().watches) {
-                    watches.push({watchID, ...snapshot.val().watches[watchID]});
+                    watches.push({
+                        watchID,
+                        ...snapshot.val().watches[watchID],
+                    });
                 }
                 setWatchList(watches);
             });
     };
 
     const watchFilter = (watch) => {
-        const {brand, model, name, mechanism, freq} = watch;
+        const { brand, model, name, mechanism, freq } = watch;
         const lowerCasePhrase = filteringPhrase.toLowerCase();
         return (
             brand.toLowerCase().includes(lowerCasePhrase) ||
@@ -37,7 +40,7 @@ const WatchList = ({user, firebase, currentWatch, setCurrentWatch}) => {
         );
     };
 
-    const handleFilteringPhraseChange = ({target: {value}}) =>
+    const handleFilteringPhraseChange = ({ target: { value } }) =>
         setFilteringPhrase(value);
 
     const handleFilterBtn = () => {
