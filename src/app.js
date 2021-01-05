@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
 // components:
 import Header from "./components/header/Header";
 import SoundWaveDisplay from "./components/soundWaveDisplay/SoundWaveDisplay";
@@ -16,12 +16,13 @@ import "./app.scss";
 // functions:
 import findPeaks from "./functions/findPeaks";
 import calculateOffset from "./functions/calculateOffset";
-// firebase:
+// database:
 import firebase from "firebase/app";
 import "firebase/auth";
 // import "firebase/firestore";
 // import "firebase/analytics";
 import "firebase/database";
+import Notification from "./components/notification/Notification";
 
 const App = () => {
     const [soundWave, setSoundWave] = useState([]);
@@ -32,6 +33,7 @@ const App = () => {
     const [currentWatch, setCurrentWatch] = useState("");
     const [initialized, setInitialized] = useState(false);
     const [user, setUser] = useState();
+    const [notify, setNotify] = useState();
 
     useEffect(() => {
         setTargetFreq(currentWatch.freq || 6);
@@ -53,11 +55,16 @@ const App = () => {
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                setUser(user);
-                setInitialized(true);
-                // console.log(user);
-            } else {
-                // No user is signed in.
+                firebase
+                    .database()
+                    .ref("/users/" + user.uid)
+                    .once("value")
+                    .then((snapshot) => {
+                        if (snapshot.val()) {
+                            setUser(snapshot.val());
+                            setInitialized(true);
+                        }
+                    });
             }
         });
     }, []);
@@ -81,13 +88,17 @@ const App = () => {
         <Router>
             <Header />
             <div className="app-container">
+                <Notification setNotify={setNotify} />
                 <Route exact path="/">
                     <LandingScreen
                         user={user}
                         setUser={setUser}
+                        setInitialized={setInitialized}
                         firebase={firebase}
+                        notify={notify}
                     />
                 </Route>
+
                 <Route exact path="/tune">
                     {currentWatch && (
                         <div className="display-selected-watch">
@@ -129,18 +140,25 @@ const App = () => {
                 </Route>
 
                 <Route exact path="/watches">
-                    {initialized && (
+                    {initialized ? (
                         <WatchList
                             user={user}
                             firebase={firebase}
                             currentWatch={currentWatch}
                             setCurrentWatch={setCurrentWatch}
+                            notify={notify}
                         />
+                    ) : (
+                        <Redirect to="/" />
                     )}
                 </Route>
 
                 <Route exact path="/settings">
-                    <Settings />
+                    {initialized ? (
+                        <Settings user={user} firebase={firebase} />
+                    ) : (
+                        <Redirect to="/" />
+                    )}
                 </Route>
             </div>
             <BottomMenu />

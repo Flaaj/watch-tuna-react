@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import "./watchList.scss";
 import Watch from "../../components/watch/Watch";
 import AddNewWatch from "../../components/addNewWatch/AddNewWatch";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 
-const WatchList = ({ user, firebase, currentWatch, setCurrentWatch }) => {
+const WatchList = ({ user, firebase, currentWatch, setCurrentWatch, notify }) => {
     const [watchList, setWatchList] = useState([]);
     const [filterForm, setFilterForm] = useState(false);
     const [filteringPhrase, setFilteringPhrase] = useState("");
+    const [sortBy, setSortBy] = useState(undefined)
     const inputRef = useRef(null);
     const [adding, setAdding] = useState(false);
 
@@ -15,7 +15,7 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch }) => {
         const watches = [];
         firebase
             .database()
-            .ref("/users/" + user.uid)
+            .ref("/users/" + user.uid)  
             .once("value")
             .then((snapshot) => {
                 for (let watchID in snapshot.val().watches) {
@@ -40,6 +40,10 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch }) => {
         );
     };
 
+    const sortFunction = (watch) => {
+
+    }
+
     const handleFilteringPhraseChange = ({ target: { value } }) =>
         setFilteringPhrase(value);
 
@@ -49,7 +53,7 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch }) => {
 
     useEffect(() => {
         getWatches();
-    }, []);
+    }, [watchList]);
 
     useEffect(() => {
         filterForm && inputRef.current.focus();
@@ -93,7 +97,7 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch }) => {
             </button>
         </div>
     ) : (
-        <AddNewWatch firebase={firebase} user={user} setAdding={setAdding} />
+        <AddNewWatch firebase={firebase} user={user} setAdding={setAdding} notify={notify} />
     );
 };
 

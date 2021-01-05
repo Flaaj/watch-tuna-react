@@ -1,8 +1,4 @@
-const calculateOffset = (
-    peakIndexes,
-    sampleRate,
-    targetFreq
-) => {
+const calculateOffset = (peakIndexes, sampleRate, targetFreq) => {
     const distances = [];
     const targetDistance = ~~(sampleRate / targetFreq);
     for (let i = 0; i < peakIndexes.length - 1; i++) {
@@ -18,7 +14,7 @@ const calculateOffset = (
     const filtered = distances.filter(
         (d) => avg - tolerance < d && d < avg + tolerance
     );
-    
+
     const m = filtered.length;
     const avg2 = filtered.reduce((a, b) => a + b, 0) / m;
 

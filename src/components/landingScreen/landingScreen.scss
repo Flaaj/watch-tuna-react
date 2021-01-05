@@ -1,0 +1,12 @@
+.landing-screen {
+    width: 80%;
+    max-width: 600px;
+    height: 80%;
+    margin: auto;
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+}

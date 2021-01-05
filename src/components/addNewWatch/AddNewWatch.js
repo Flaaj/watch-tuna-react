@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from "react";
-import {Link, useHistory} from "react-router-dom";
-import "./addNewWatch.scss"
+import React, { useState, useEffect } from "react";
+import "./addNewWatch.scss";
 
-const AddNewWatch = ({firebase, user, setAdding}) => {
+const AddNewWatch = ({ firebase, user, setAdding, notify }) => {
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
     const [name, setName] = useState("");
@@ -10,7 +9,8 @@ const AddNewWatch = ({firebase, user, setAdding}) => {
     const [freq, setFreq] = useState();
     const [mechanism, setMechanism] = useState("");
 
-    const submitWatch = () => {
+    const submitWatch = (e) => {
+        e.preventDefault();
         const watchObject = {
             brand,
             model,
@@ -23,9 +23,11 @@ const AddNewWatch = ({firebase, user, setAdding}) => {
         firebase
             .database()
             .ref("users/" + user.uid + "/watches/")
-            .push(watchObject);
-        const history = useHistory();
-        history.push("/watches");
+            .push(watchObject)
+            .then(() => {
+                setAdding(false)
+                notify("Succesfully added new watch")
+            });
     };
 
     return (

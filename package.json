@@ -26,7 +26,6 @@
     "microphone-stream": "^5.1.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-router-dom": "^5.2.0",
-    "react-svg": "^11.2.1"
+    "react-router-dom": "^5.2.0"
   }
 }

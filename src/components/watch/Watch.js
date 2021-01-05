@@ -1,13 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import WatchDetails from "../watchDetails/WatchDetails";
 import "./watch.scss";
-const Watch = ({watchInfo, currentWatch, setCurrentWatch}) => {
-    const {brand, model, name, mechanism, freq} = watchInfo;
+const Watch = ({ watchInfo, currentWatch, setCurrentWatch, notify }) => {
+    const { brand, model, name, mechanism, freq } = watchInfo;
     const [expanded, setExpanded] = useState(false);
-
-    const measurements = [];
-    for (let id in watchInfo.measurements) {
-        measurements.push(watchInfo.measurements[id]);
-    }
 
     return (
         <>
@@ -55,15 +51,7 @@ const Watch = ({watchInfo, currentWatch, setCurrentWatch}) => {
                     </div>
                 </div>
             </div>
-            {expanded && (
-                <ul className="">
-                    {measurements.map(({date, result}) => (
-                        <div>
-                            <h4>{date} :</h4> <span>{result.toFixed(3)}s</span>
-                        </div>
-                    ))}
-                </ul>
-            )}
+            {expanded && <WatchDetails watchInfo={watchInfo}/>}
         </>
     );
 };

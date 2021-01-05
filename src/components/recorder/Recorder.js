@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./recorder.scss";
-const MicrophoneStream = require("microphone-stream");
-const Fili = require("fili");
+import MicrophoneStream from "microphone-stream";
+import Fili from "fili";
 
-const Recorder = ({
-    setSoundWave,
-    sampleRate,
-    setPeakIndexes,
-}) => {
+const Recorder = ({ setSoundWave, sampleRate, setPeakIndexes }) => {
     const [audioStream, setAudioStream] = useState();
     const [filter, setFilter] = useState();
 
@@ -26,7 +22,7 @@ const Recorder = ({
     }, [sampleRate]);
 
     const startRecording = () => {
-        audioStream && audioStream.stop(); // If previous recording wasnt stopped, do it now
+        stopRecording(); // If previous recording wasnt stopped, do it now
         setSoundWave([]);
         setPeakIndexes([]);
 
@@ -37,10 +33,10 @@ const Recorder = ({
             sampleRate > 50000
                 ? 16384
                 : sampleRate > 30000
-                    ? 16384 / 2
-                    : sampleRate > 20000
-                        ? 16384 / 8
-                        : 16384 / 16;
+                ? 16384 / 2
+                : sampleRate > 20000
+                ? 16384 / 8
+                : 16384 / 16;
 
         const micStream = new MicrophoneStream({ bufferSize, context });
         setAudioStream(micStream);
@@ -48,8 +44,6 @@ const Recorder = ({
         navigator.mediaDevices
             .getUserMedia({ audio: true, video: false })
             .then((stream) => {
-                console.log("mic works");
-
                 micStream.setStream(stream);
                 micStream.on("data", (chunk) => {
                     const raw = MicrophoneStream.toRaw(chunk);
@@ -63,7 +57,7 @@ const Recorder = ({
     };
 
     const stopRecording = () => {
-        audioStream.stop();
+        audioStream && audioStream.stop();
     };
 
     return (
