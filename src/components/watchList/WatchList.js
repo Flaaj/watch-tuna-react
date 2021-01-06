@@ -3,11 +3,17 @@ import "./watchList.scss";
 import Watch from "../../components/watch/Watch";
 import AddNewWatch from "../../components/addNewWatch/AddNewWatch";
 
-const WatchList = ({ user, firebase, currentWatch, setCurrentWatch, notify }) => {
+const WatchList = ({
+    user,
+    firebase,
+    currentWatch,
+    setCurrentWatch,
+    notify,
+}) => {
     const [watchList, setWatchList] = useState([]);
     const [filterForm, setFilterForm] = useState(false);
     const [filteringPhrase, setFilteringPhrase] = useState("");
-    const [sortBy, setSortBy] = useState(undefined)
+    const [sortBy, setSortBy] = useState(undefined);
     const inputRef = useRef(null);
     const [adding, setAdding] = useState(false);
 
@@ -15,7 +21,7 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch, notify }) =>
         const watches = [];
         firebase
             .database()
-            .ref("/users/" + user.uid)  
+            .ref("/users/" + user.uid)
             .once("value")
             .then((snapshot) => {
                 for (let watchID in snapshot.val().watches) {
@@ -40,9 +46,7 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch, notify }) =>
         );
     };
 
-    const sortFunction = (watch) => {
-
-    }
+    const sortFunction = (watch) => {};
 
     const handleFilteringPhraseChange = ({ target: { value } }) =>
         setFilteringPhrase(value);
@@ -75,10 +79,13 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch, notify }) =>
             )}
             {watchList.filter(watchFilter).map((watch) => (
                 <Watch
+                    user={user}
+                    firebase={firebase}
                     key={watch.watchID}
                     watchInfo={watch}
                     currentWatch={currentWatch}
                     setCurrentWatch={setCurrentWatch}
+                    notify={notify}
                 />
             ))}
             <button
@@ -97,7 +104,12 @@ const WatchList = ({ user, firebase, currentWatch, setCurrentWatch, notify }) =>
             </button>
         </div>
     ) : (
-        <AddNewWatch firebase={firebase} user={user} setAdding={setAdding} notify={notify} />
+        <AddNewWatch
+            firebase={firebase}
+            user={user}
+            setAdding={setAdding}
+            notify={notify}
+        />
     );
 };
 

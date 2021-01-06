@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import WatchDetails from "../watchDetails/WatchDetails";
 import "./watch.scss";
-const Watch = ({ watchInfo, currentWatch, setCurrentWatch, notify }) => {
+const Watch = ({
+    watchInfo,
+    currentWatch,
+    setCurrentWatch,
+    user,
+    notify,
+    firebase,
+}) => {
     const { brand, model, name, mechanism, freq } = watchInfo;
     const [expanded, setExpanded] = useState(false);
 
@@ -51,7 +58,14 @@ const Watch = ({ watchInfo, currentWatch, setCurrentWatch, notify }) => {
                     </div>
                 </div>
             </div>
-            {expanded && <WatchDetails watchInfo={watchInfo}/>}
+            {expanded && (
+                <WatchDetails
+                    watchInfo={watchInfo}
+                    user={user}
+                    firebase={firebase}
+                    notify={notify}
+                />
+            )}
         </>
     );
 };

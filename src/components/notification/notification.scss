@@ -1,9 +1,16 @@
 .notification {
     position: absolute;
-    top: 80px;
+    top: 150px;
     left: 50%;
     transform: translate(-50%, 0);
-    width: 150px;
+    min-width: 300px;
+    padding: 0 20px;
     height: 30px;
-    background-color: turquoise;
+    background-color: skyblue;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    z-index: 1;
 }

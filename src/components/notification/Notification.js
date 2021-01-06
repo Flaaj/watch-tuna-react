@@ -3,25 +3,24 @@ import "./notification.scss";
 
 const Notification = ({ setNotify }) => {
     const [message, setMessage] = useState("");
-    const [display, setDisplay] = useState("none");
+    const [notifDisplay, setNotifDisplay] = useState("none");
 
     useEffect(() => {
         setNotify(notify);
     }, []);
 
-    const notify = (msg) => {
-        console.log("siema")
+    const notify = () => (msg) => {
         setMessage(msg);
         setTimeout(() => {
-            setDisplay("")
-        }, 300);
+            setNotifDisplay("");
+        }, 150);
         setTimeout(() => {
-            setDisplay("none")
-        }, 5000);
+            setNotifDisplay("none");
+        }, 3000);
     };
 
     return (
-        <div className="notification" style={{ display: display }}>
+        <div className="notification" style={{ display: notifDisplay }}>
             {message}
         </div>
     );

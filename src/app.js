@@ -86,82 +86,84 @@ const App = () => {
 
     return (
         <Router>
-            <Header />
-            <div className="app-container">
+            <div className="page-wrapper">
+                <Header />
                 <Notification setNotify={setNotify} />
-                <Route exact path="/">
-                    <LandingScreen
-                        user={user}
-                        setUser={setUser}
-                        setInitialized={setInitialized}
-                        firebase={firebase}
-                        notify={notify}
-                    />
-                </Route>
-
-                <Route exact path="/tune">
-                    {currentWatch && (
-                        <div className="display-selected-watch">
-                            <p>Measuring: </p>
-                            <strong>
-                                {currentWatch.brand}{" "}
-                                {currentWatch.name
-                                    ? '"' + currentWatch.name + '"'
-                                    : undefined}{" "}
-                                {currentWatch.model}
-                            </strong>
-                        </div>
-                    )}
-                    <SoundWaveDisplay
-                        soundWave={soundWave}
-                        sampleRate={sampleRate}
-                        peakIndexes={peakIndexes}
-                    />
-                    <OffsetDisplay
-                        offset={secondsPerDayOffset}
-                        targetFreq={targetFreq}
-                        firebase={firebase}
-                        user={user}
-                        currentWatch={currentWatch}
-                    />
-                    <div className="row">
-                        <OptionsForm
-                            setTargetFreq={setTargetFreq}
-                            setSampleRate={setSampleRate}
-                            targetFreq={targetFreq}
-                        />
-                        <Recorder
-                            setSoundWave={setSoundWave}
-                            sampleRate={sampleRate}
-                            currentWatch={currentWatch}
-                            setPeakIndexes={setPeakIndexes}
-                        />
-                    </div>
-                </Route>
-
-                <Route exact path="/watches">
-                    {initialized ? (
-                        <WatchList
+                <main className="app-container">
+                    <Route exact path="/">
+                        <LandingScreen
                             user={user}
+                            setUser={setUser}
+                            setInitialized={setInitialized}
                             firebase={firebase}
-                            currentWatch={currentWatch}
-                            setCurrentWatch={setCurrentWatch}
                             notify={notify}
                         />
-                    ) : (
-                        <Redirect to="/" />
-                    )}
-                </Route>
+                    </Route>
 
-                <Route exact path="/settings">
-                    {initialized ? (
-                        <Settings user={user} firebase={firebase} />
-                    ) : (
-                        <Redirect to="/" />
-                    )}
-                </Route>
+                    <Route exact path="/tune">
+                        {currentWatch && (
+                            <div className="display-selected-watch">
+                                <p>Measuring: </p>
+                                <strong>
+                                    {currentWatch.brand}{" "}
+                                    {currentWatch.name
+                                        ? '"' + currentWatch.name + '"'
+                                        : undefined}{" "}
+                                    {currentWatch.model}
+                                </strong>
+                            </div>
+                        )}
+                        <SoundWaveDisplay
+                            soundWave={soundWave}
+                            sampleRate={sampleRate}
+                            peakIndexes={peakIndexes}
+                        />
+                        <OffsetDisplay
+                            offset={secondsPerDayOffset}
+                            targetFreq={targetFreq}
+                            firebase={firebase}
+                            user={user}
+                            currentWatch={currentWatch}
+                        />
+                        <div className="row">
+                            <OptionsForm
+                                setTargetFreq={setTargetFreq}
+                                setSampleRate={setSampleRate}
+                                targetFreq={targetFreq}
+                            />
+                            <Recorder
+                                setSoundWave={setSoundWave}
+                                sampleRate={sampleRate}
+                                currentWatch={currentWatch}
+                                setPeakIndexes={setPeakIndexes}
+                            />
+                        </div>
+                    </Route>
+
+                    <Route exact path="/watches">
+                        {initialized ? (
+                            <WatchList
+                                user={user}
+                                firebase={firebase}
+                                currentWatch={currentWatch}
+                                setCurrentWatch={setCurrentWatch}
+                                notify={notify}
+                            />
+                        ) : (
+                            <Redirect to="/" />
+                        )}
+                    </Route>
+
+                    <Route exact path="/settings">
+                        {initialized ? (
+                            <Settings user={user} firebase={firebase} />
+                        ) : (
+                            <Redirect to="/" />
+                        )}
+                    </Route>
+                </main>
+                <BottomMenu />
             </div>
-            <BottomMenu />
         </Router>
     );
 };

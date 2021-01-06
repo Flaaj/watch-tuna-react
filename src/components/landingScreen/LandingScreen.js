@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./landingScreen.scss";
 
-const LandingScreen = ({ user, setUser, firebase, setInitialized }) => {
+const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
     const [signUpEmail, setSignUpEmail] = useState("");
     const [signUpPassword, setSignUpPassword] = useState("");
     const [showSignUpForm, setShowSignUpForm] = useState(false);
-    const [reload, setReload] = useState(false)
+    const [reload, setReload] = useState(false);
     const signUp = (email, password, e) => {
         e.preventDefault();
         firebase
@@ -21,6 +21,7 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized }) => {
                         watches: [],
                     });
                 logIn(email, password);
+                notify("Welcome, new user!")
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -38,24 +39,26 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized }) => {
             .signInWithEmailAndPassword(email, password)
             .then((user) => {
                 setUser(user.user);
+                e && notify("Logged in. Welcome! :)");
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorCode, errorMessage);
+                notify("Ops! Wrong email or/and password.")
             });
     };
 
     const logOut = () => {
-        setLogInEmail("")
-        setLogInPassword("")
-        setUser(undefined)
+        setLogInEmail("");
+        setLogInPassword("");
+        setUser(undefined);
         firebase
             .auth()
             .signOut()
             .then(() => {
-                console.log("signed out")
-                setInitialized(false)
+                notify("Logged out. See you later!");
+                setInitialized(false);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -128,7 +131,10 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized }) => {
         </div>
     ) : (
         <div>
-            <h2>welcome {user.username ? user.username : user.email.split("@")[0]}</h2>
+            <h2>
+                welcome{" "}
+                {user.username ? user.username : user.email.split("@")[0]}
+            </h2>
             <button onClick={logOut}>Log out</button>
         </div>
     );

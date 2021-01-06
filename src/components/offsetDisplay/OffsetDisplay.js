@@ -3,7 +3,7 @@ import "./offsetDisplay.scss";
 
 const OffsetDisplay = ({offset, targetFreq, user, firebase, currentWatch}) => {
     const siema = () => {
-        const date = new Date().toUTCString();
+        const date = new Date().toLocaleString();
         firebase
             .database()
             .ref(

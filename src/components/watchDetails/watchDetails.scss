@@ -1,0 +1,56 @@
+.watch-details {
+    &__edit {
+        width: 400px;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        align-items: space-between;
+        margin: auto;
+        max-height: 400px;
+    }
+
+    .row {
+        width: 100%;
+        justify-content: space-between;
+        padding: 5px 30px;
+    }
+
+    label {
+        text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+        width: 200px;
+        border: 1px solid grey;
+        border-radius: 5px;
+    }
+
+    &__save-btn {
+        margin: 30px;
+    }
+
+    &__measurements-list {
+        padding: 0 40px;
+    }
+
+    &__measurement {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__date {
+        margin: 0;
+        padding: 0;
+    }
+
+    &__delete-measurement {
+        padding: 0;
+        margin: 0;
+        margin-left: 10px;
+        background: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+    }
+}
