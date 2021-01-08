@@ -1,32 +1,59 @@
 .add-watch {
-    width: 400px;
+    width: 100%;
+    max-width: 600px;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: space-between;
+    justify-content: center;
     margin: auto;
-    max-height: 400px;
+    max-height: 800px;
+    padding-top: 70px;
+
+    &__container {
+        height: 100%;
+    }
+
+    &__heading {
+        text-align: center;
+    }
 
     .row {
         width: 100%;
         justify-content: space-between;
-        padding: 10px 30px;
-        
+        padding: 5px 30px;
+        display: flex;
     }
 
     label {
         text-transform: uppercase;
+        font-size: 14px;
+        width: 130px;
     }
 
-    input, textarea {
-        width: 200px;
-        border: 1px solid grey;
-        border-radius: 5px;
+    input,
+    textarea {
+        flex-grow: 1;
+        border: none;
+        border-radius: none;
+        resize: none;
+        outline: none;
+        border-bottom: 1px solid grey;
+
+        &:focus {
+            background-color: rgba(skyblue, 0.2);
+        }
     }
 
+    input {
+        text-align: right;
+    }
     button {
-        // width: 0
-        margin: 30px;
+        box-sizing: border-box;
+        border: none;
+        padding: 5px;
+        margin: 20px 30px;
+        background-color: skyblue;
     }
 
 }

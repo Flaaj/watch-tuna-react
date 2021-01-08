@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
 import "./settings.scss";
+import WatchDetails from "../watchDetails/WatchDetails";
 
-const Settings = ({ user, firebase }) => {
+const Settings = ({
+    user,
+    firebase,
+    filterParams,
+    setFilterParams,
+    currentWatch,
+}) => {
     const [username, setUsername] = useState(user.username || "");
+    const [filtA, setFiltA] = useState(
+        ~~(filterParams[0]) - ~~(filterParams[1] / 2)
+    );
+    const [filtB, setFiltB] = useState(
+        ~~(filterParams[0]) + ~~(filterParams[1] / 2)
+    );
 
     const handleNameSubmit = (e) => {
-        e.preventDefault()
-        firebase    
+        e.preventDefault();
+        firebase
             .database()
             .ref("users/" + user.uid + "/username/")
             .set(username)
@@ -17,17 +30,57 @@ const Settings = ({ user, firebase }) => {
                 console.log(err);
             });
     };
+
+    useEffect(() => {
+        setFilterParams([(filtA + ~~filtB) / 2, filtB - filtA + 1]);
+    }, [filtA, filtB]);
+
     return (
         <div className="settings">
             <form action="" onSubmit={handleNameSubmit}>
-                <label htmlFor="username">Set your username:</label>
+                <h2 className="settings__heading">Basic settings:</h2>
+                <div className="row">
+                    <label htmlFor="username">Set your username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+            </form>
+            <div className="row">
+                <label htmlFor="filtA">Lower filter cutoff frequency </label>
                 <input
                     type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    id="filtA"
+                    value={filtA}
+                    onChange={(e) => setFiltA(~~(e.target.value))}
                 />
-            </form>
+            </div>
+            <div className="row">
+                <label htmlFor="filtB">
+                    Upper filter cutoff frequency:{" "}
+                </label>
+                <input
+                    type="text"
+                    id="filtB"
+                    value={filtB}
+                    onChange={(e) => setFiltB(~~(e.target.value))}
+                />
+            </div>
+            {currentWatch && (
+                <>
+                    <h2 className="settings__heading">
+                        {currentWatch.brand} {currentWatch.model}:
+                    </h2>
+                    <WatchDetails
+                        watchInfo={currentWatch}
+                        user={user}
+                        firebase={firebase}
+                    />
+                </>
+            )}
         </div>
     );
 };

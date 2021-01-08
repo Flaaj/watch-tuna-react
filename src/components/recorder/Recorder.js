@@ -3,7 +3,7 @@ import "./recorder.scss";
 import MicrophoneStream from "microphone-stream";
 import Fili from "fili";
 
-const Recorder = ({ setSoundWave, sampleRate, setPeakIndexes }) => {
+const Recorder = ({ setSoundWave, sampleRate, setPeakIndexes, filterParams }) => {
     const [audioStream, setAudioStream] = useState();
     const [filter, setFilter] = useState();
 
@@ -13,8 +13,8 @@ const Recorder = ({ setSoundWave, sampleRate, setPeakIndexes }) => {
             order: 12,
             characteristic: "butterworth",
             Fs: sampleRate,
-            Fc: 6400,
-            BW: 1, //** FILTER BANDWIDTH **//
+            Fc: filterParams[0],
+            BW: filterParams[1], //** FILTER BANDWIDTH **//
         });
 
         const iirFilter = new Fili.IirFilter(iirFilterCoeffs);

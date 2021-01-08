@@ -9,7 +9,7 @@ const Watch = ({
     notify,
     firebase,
 }) => {
-    const { brand, model, name, mechanism, freq } = watchInfo;
+    const { brand, model, name, mechanism, freq, img } = watchInfo;
     const [expanded, setExpanded] = useState(false);
 
     return (
@@ -20,9 +20,9 @@ const Watch = ({
                     onClick={() => setExpanded((prev) => !prev)}
                 >
                     <img
-                        height="80px"
-                        width="80px"
-                        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fs.yimg.com%2Faah%2F4-watches%2Fmen-s-scuderia-ferrari-black-chronograph-leather-watch-830274-12.gif&f=1&nofb=1"
+                        // height="80px"
+                        width="100px"
+                        src={img || "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fs.yimg.com%2Faah%2F4-watches%2Fmen-s-scuderia-ferrari-black-chronograph-leather-watch-830274-12.gif&f=1&nofb=1"}
                         className="watch__image"
                     ></img>
                 </div>
@@ -33,7 +33,7 @@ const Watch = ({
                     </h2>
                     <div className="watch__row">
                         <p>
-                            It's {mechanism} ticks {freq} times per second
+                            {mechanism} ({freq}Hz / {freq * 3600}BPH)
                         </p>
                         {watchInfo.watchID != currentWatch.watchID ? (
                             <button

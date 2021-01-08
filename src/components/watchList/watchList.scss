@@ -1,4 +1,8 @@
 .watch-list {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+
     &__floating-btn {
         position: fixed;
         width: 50px;
@@ -8,7 +12,7 @@
         box-shadow: 2px 2px 10px 0 grey;
         border-radius: 50%;
         border: none;
-        background-color: turquoise;
+        background-color: skyblue;
         font-size: 40px;
         color: white;
 

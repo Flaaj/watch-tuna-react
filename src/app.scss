@@ -23,6 +23,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 70px;
+    margin: auto;
 
     @media screen and (orientation: landscape) {
         min-height: 500px;

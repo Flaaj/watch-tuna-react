@@ -32,6 +32,7 @@ const App = () => {
     const [secondsPerDayOffset, setSecondsPerDayOffset] = useState([]);
     const [currentWatch, setCurrentWatch] = useState("");
     const [initialized, setInitialized] = useState(false);
+    const [filterParams, setFilterParams] = useState([6400, 1]);
     const [user, setUser] = useState();
     const [notify, setNotify] = useState();
 
@@ -136,6 +137,7 @@ const App = () => {
                                 sampleRate={sampleRate}
                                 currentWatch={currentWatch}
                                 setPeakIndexes={setPeakIndexes}
+                                filterParams={filterParams}
                             />
                         </div>
                     </Route>
@@ -156,7 +158,13 @@ const App = () => {
 
                     <Route exact path="/settings">
                         {initialized ? (
-                            <Settings user={user} firebase={firebase} />
+                            <Settings
+                                user={user}
+                                firebase={firebase}
+                                filterParams={filterParams}
+                                setFilterParams={setFilterParams}
+                                currentWatch={currentWatch}
+                            />
                         ) : (
                             <Redirect to="/" />
                         )}

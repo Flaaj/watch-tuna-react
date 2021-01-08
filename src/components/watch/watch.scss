@@ -6,19 +6,19 @@
     align-items: center;
 
     &__image-container {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-left: 10px;
     }
 
     &__image {
         width: 100%;
-        height: 100%;
-        margin: 10px;
         overflow: hidden;
+        flex-shrink: 0;
     }
 
     &__container {
@@ -36,10 +36,15 @@
 
     &__row {
         display: flex;
+        width: 100%;
         align-items: center;
+        justify-content: space-between;
 
         p {
+            display: inline-block;
             text-align: center;
+            margin: auto;
+            padding: 20px;
         }
     }
 
@@ -48,9 +53,6 @@
         height: 30px;
         margin-right: 20px;
         margin-left: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         border: none;
         background-color: black;
         color: white;

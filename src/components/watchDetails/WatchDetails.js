@@ -8,6 +8,11 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
     const [mechanism, setMechanism] = useState(watchInfo.mechanism);
     const [text, setText] = useState(watchInfo.text);
     const [freq, setFreq] = useState(watchInfo.freq);
+    const [serviceDate, setServiceDate] = useState(watchInfo.serviceDate);
+    const [futureServiceDate, setFutureServiceDate] = useState(
+        watchInfo.futureServiceDate
+    );
+    const [img, setImg] = useState(watchInfo.img);
     const [reload, setReload] = useState(false);
     const [measurements, setMeasurements] = useState([]);
 
@@ -28,6 +33,9 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
             name,
             mechanism,
             freq,
+            serviceDate,
+            futureServiceDate,
+            img,
             text,
         };
 
@@ -120,6 +128,26 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
                     />
                 </div>
                 <div className="row">
+                    <label htmlFor="serviceDate">last service date: </label>
+                    <input
+                        id="serviceDate"
+                        type="date"
+                        value={serviceDate}
+                        onChange={(e) => setServiceDate(e.target.value)}
+                    />
+                </div>
+                <div className="row">
+                    <label htmlFor="futureServiceDate">
+                        Next planned service date:{" "}
+                    </label>
+                    <input
+                        id="futureServiceDate"
+                        type="date"
+                        value={futureServiceDate}
+                        onChange={(e) => setFutureServiceDate(e.target.value)}
+                    />
+                </div>
+                <div className="row">
                     <label htmlFor="text">Additional info: </label>
                     <textarea
                         id="text"
@@ -133,17 +161,32 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
                     <label htmlFor="freq">Beat rate:</label>
                     <input
                         type="number"
+                        step="0.5"
+                        min="1"
+                        max="60"
                         id="freq"
                         value={freq}
                         onChange={(e) => setFreq(e.target.value)}
+                    />
+                </div>
+                <div className="row">
+                    <label htmlFor="img">Img url:</label>
+                    <input
+                        type="text"
+                        id="img"
+                        value={img}
+                        onChange={(e) => setImg(e.target.value)}
                     />
                 </div>
                 <button type="submit" className="watch-details__save-btn">
                     Save changes
                 </button>
             </form>
+            <h3 className="watch-details__measuremenents-heading">
+                Past measurements:
+            </h3>
             <ul className="watch-details__measurements-list">
-                {measurements.map(({ id, date, result }) => (
+                {measurements.length > 0 ? measurements.map(({ id, date, result }) => (
                     <div className="watch-details__measurement" key={date}>
                         <h4 className="watch-details__date">{date} :</h4>{" "}
                         <div>
@@ -158,10 +201,10 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
                             </button>
                         </div>
                     </div>
-                ))}
+                )) : "-"}
             </ul>
 
-            <button onClick={deleteWatch}>Delete this watch</button>
+            <button onClick={deleteWatch} className="watch-details__delete-watch">Delete this watch</button>
         </div>
     );
 };

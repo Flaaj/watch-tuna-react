@@ -10,7 +10,7 @@ const SoundWaveDisplay = ({soundWave, sampleRate, peakIndexes}) => {
 
     const renderEveryNthSample =
         sampleRate > 50000
-            ? 1024
+            ? 256
             : sampleRate >= 40000
             ? 128
             : sampleRate > 20000

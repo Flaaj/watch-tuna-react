@@ -9,4 +9,50 @@
         flex-direction: column;
         text-align: center;
     }
+
+    .row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    input {
+        border: none;
+        border-radius: none;
+        resize: none;
+        outline: none;
+        border-bottom: 1px solid grey;
+        margin-bottom: 30px;
+    }
+
+    &__btn {
+        border: none;
+        height: 2em;
+        margin: 0 20px;
+        background-color: skyblue;
+        margin-bottom: 20px;
+
+        &--logout {
+            margin: 0;
+            margin-left: 20px;
+        }
+    }
+
+    &__heading {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    &__tips {
+        list-style: decimal;
+        padding: 0;
+        padding-bottom: 40px;
+        font-size: 14px;
+        text-align: justify;
+    }
+
+    &__tip {
+        margin-top: 10px;
+    }
 }
