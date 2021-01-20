@@ -37,77 +37,81 @@ const AddNewWatch = ({ firebase, user, setAdding, notify }) => {
             });
     };
 
+    const updateState = (setState) => ({ target: { value } }) => {
+        setState(value);
+    };
+
     return (
-        <div className="add-watch__container">
-            <form className="add-watch" onSubmit={submitWatch}>
+        <div className="add-watch">
+            <form className="add-watch__form" onSubmit={submitWatch}>
                 <h2 className="add-watch__heading">Add new watch</h2>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="brand">Brand: </label>
                     <input
                         id="brand"
                         type="text"
                         value={brand}
-                        onChange={(e) => setBrand(e.target.value)}
+                        onChange={updateState(setBrand)}
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="model">Model: </label>
                     <input
                         id="model"
                         type="text"
                         value={model}
-                        onChange={(e) => setModel(e.target.value)}
+                        onChange={updateState(setModel)}
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="name">Name: </label>
                     <input
                         id="name"
                         type="text"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={updateState(setName)}
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="mechanism">Mechanism: </label>
                     <input
                         id="mechanism"
                         type="text"
                         value={mechanism}
-                        onChange={(e) => setMechanism(e.target.value)}
+                        onChange={updateState(setMechanism)}
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="serviceDate">Last service date: </label>
                     <input
                         id="serviceDate"
                         type="date"
                         value={serviceDate}
-                        onChange={(e) => setServiceDate(e.target.value)}
+                        onChange={updateState(setServiceDate)}
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="futureServiceDate">
-                        Next planned service date:{" "}
+                        Next planned service date:
                     </label>
                     <input
                         id="futureServiceDate"
                         type="date"
                         value={futureServiceDate}
-                        onChange={(e) => setFutureServiceDate(e.target.value)}
+                        onChange={updateState(setFutureServiceDate)}
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="brand">Additional info: </label>
                     <textarea
                         id="brand"
                         type="text"
                         value={text}
-                        onChange={(e) => setText(e.target.value)}
+                        onChange={updateState(setText)}
                         rows="4"
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="freq">Beat rate:</label>
                     <input
                         type="number"
@@ -116,16 +120,16 @@ const AddNewWatch = ({ firebase, user, setAdding, notify }) => {
                         max="60"
                         id="freq"
                         value={freq}
-                        onChange={(e) => setFreq(e.target.value)}
+                        onChange={updateState(setFreq)}
                     />
                 </div>
-                <div className="row">
+                <div className="add-watch__row">
                     <label htmlFor="img">Img url:</label>
                     <input
                         type="text"
                         id="img"
                         value={img}
-                        onChange={(e) => setImg(e.target.value)}
+                        onChange={updateState(setImg)}
                     />
                 </div>
                 <button type="submit">Add new watch</button>

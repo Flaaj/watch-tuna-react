@@ -2,31 +2,29 @@ import React, { useState, useEffect } from "react";
 import "./landingScreen.scss";
 
 const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
+    const [showSignUpForm, setShowSignUpForm] = useState(false);
+
     const [signUpEmail, setSignUpEmail] = useState("");
     const [signUpPassword, setSignUpPassword] = useState("");
-    const [showSignUpForm, setShowSignUpForm] = useState(false);
-    const [reload, setReload] = useState(false);
     const signUp = (email, password, e) => {
         e.preventDefault();
         firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
-            .then((user) => {
+            .then(({ user }) => {
                 firebase
                     .database()
-                    .ref("users/" + user.user.uid)
+                    .ref("users/" + user.uid)
                     .set({
                         email,
-                        uid: user.user.uid,
+                        uid: user.uid,
                         watches: [],
                     });
                 logIn(email, password);
                 notify("Welcome, new user!");
             })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+            .catch(({ code, message }) => {
+                console.log(code, message);
             });
     };
 
@@ -37,14 +35,12 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then((user) => {
-                setUser(user.user);
+            .then(({ user }) => {
+                setUser(user);
                 e && notify("Logged in. Welcome! :)");
             })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+            .catch(({ code, message }) => {
+                console.log(code, message);
                 notify("Ops! Wrong email or/and password.");
             });
     };
@@ -60,10 +56,8 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                 notify("Logged out. See you later!");
                 setInitialized(false);
             })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+            .catch(({ code, message }) => {
+                console.log(code, message);
             });
     };
 
@@ -78,20 +72,23 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                     <input
                         type="email"
                         value={logInEmail}
-                        onChange={(e) => setLogInEmail(e.target.value)}
+                        onChange={({ target: { value } }) =>
+                            setLogInEmail(value)
+                        }
                         placeholder="E-mail address"
                     />
                     <input
                         type="password"
                         value={logInPassword}
-                        onChange={(e) => setLogInPassword(e.target.value)}
+                        onChange={({ target: { value } }) =>
+                            setLogInPassword(value)
+                        }
                         placeholder="Password"
                     />
                     <button
                         onClick={(e) => logIn(logInEmail, logInPassword, e)}
                         className="landing-screen__btn"
                     >
-                        
                         Login
                     </button>
                     <span>Don't have an account yet? </span>
@@ -114,14 +111,18 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                         type="email"
                         id="email"
                         value={signUpEmail}
-                        onChange={(e) => setSignUpEmail(e.target.value)}
+                        onChange={({ target: { value } }) =>
+                            setSignUpEmail(value)
+                        }
                         placeholder="E-mail address"
                     />
                     <input
                         type="password"
                         id="password"
                         value={signUpPassword}
-                        onChange={(e) => setSignUpPassword(e.target.value)}
+                        onChange={({ target: { value } }) =>
+                            setSignUpPassword(value)
+                        }
                         placeholder="Password"
                     />
                     <button
@@ -159,7 +160,8 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
             <ul className="landing-screen__tips">
                 <li className="landing-screen__tip">
                     Try to find a spot where your watch makes the most audible
-                    sounds and put your microphone close to this spot
+                    sounds and put your microphone close to this spot and press
+                    "Start recording" in the TUNE section.
                 </li>
                 <li className="landing-screen__tip">
                     Obviously, if you want to measure your watch's accuracy, you
@@ -178,20 +180,25 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                 </li>
                 <li className="landing-screen__tip">
                     The longer the measurement, the more accurate the results.
-                    Although on some smartphones after 20-30 seconds microphone
-                    loses some samples, making the measured tick distances
-                    shorter and therefore making measurement highly incorrect.
+                    Although on some smartphones, after 20-30 seconds microphone
+                    starts losing samples, making the measured tick interval
+                    shorter and therefore making measurement results as if the
+                    watch is speeding up way too much.
                 </li>
                 <li className="landing-screen__tip">
-                    If you don't know your watch's beat frequency, set it to
-                    10Hz and look at resulting frequency. Then set the correct
-                    one and measure again.
+                    If you don't know your watch's tick frequency, set it to
+                    10Hz, start recording and look at resulting frequency, which
+                    should be close to desired one. Then set the correct one and
+                    measure again.
                 </li>
                 <li className="landing-screen__tip">
                     Some watches have balance wheel that sounds different when
                     contracting and relaxing. That makes it hard for algorithm
                     to measure tick speed. In this case it's good to set beat
-                    frequency to half of the actual one (e.g. 3Hz instead of 6)
+                    frequency to half of the actual one (e.g. 3Hz instead of 6).
+                    If you still remain on correct tick frequency, the results
+                    should vary between 2 different values. The average of them
+                    should be the "correct" result.
                 </li>
             </ul>
         </div>

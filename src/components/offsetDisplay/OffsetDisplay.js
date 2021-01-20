@@ -1,7 +1,14 @@
 import React from "react";
 import "./offsetDisplay.scss";
 
-const OffsetDisplay = ({offset, targetFreq, user, firebase, currentWatch}) => {
+const OffsetDisplay = ({
+    offset,
+    targetFreq,
+    user,
+    firebase,
+    currentWatch,
+}) => {
+    
     const siema = () => {
         const date = new Date().toLocaleString();
         firebase
@@ -13,8 +20,9 @@ const OffsetDisplay = ({offset, targetFreq, user, firebase, currentWatch}) => {
                     currentWatch.watchID +
                     "/measurements/"
             )
-            .push({date, type: "recorded", result: offset[0]});
+            .push({ date, type: "recorded", result: offset[0] });
     };
+
     return (
         <div className="offset-display">
             {currentWatch && (

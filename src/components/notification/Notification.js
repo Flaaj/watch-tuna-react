@@ -3,7 +3,7 @@ import "./notification.scss";
 
 const Notification = ({ setNotify }) => {
     const [message, setMessage] = useState("");
-    const [notifDisplay, setNotifDisplay] = useState("none");
+    const [display, setNotifDisplay] = useState("none");
 
     useEffect(() => {
         setNotify(notify);
@@ -20,7 +20,7 @@ const Notification = ({ setNotify }) => {
     };
 
     return (
-        <div className="notification" style={{ display: notifDisplay }}>
+        <div className="notification" style={{ display }}>
             {message}
         </div>
     );

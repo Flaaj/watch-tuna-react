@@ -1,10 +1,10 @@
-import React, {useState, useEffect, createRef} from "react";
+import React, { useState, useEffect, createRef } from "react";
 import "./soundWaveDisplay.scss";
 
-// number should be a power of 2 to ensure nice redrawing.
 const canvasHeight = 200;
 
-const SoundWaveDisplay = ({soundWave, sampleRate, peakIndexes}) => {
+const SoundWaveDisplay = ({ soundWave, sampleRate, peakIndexes }) => {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [canvasRef, setCanvasRef] = useState(createRef());
     const [ctx, setCtx] = useState();
 
@@ -27,13 +27,12 @@ const SoundWaveDisplay = ({soundWave, sampleRate, peakIndexes}) => {
 
     const draw = () => {
         if (ctx) {
-            ctx.clearRect(0, 0, window.innerWidth, canvasHeight); // clear canvas before redrawing
-            const width = window.innerWidth / sampleRate / timeWindow;
+            ctx.clearRect(0, 0, windowWidth, canvasHeight); // clear canvas before redrawing
+            const width = windowWidth / sampleRate / timeWindow;
 
             // drawing sound wave:
-            ctx.strokeStyle = "blue";
-            ctx.lineWidth = 1;
             const wavePath = new Path2D();
+            ctx.strokeStyle = "blue";
             wave.forEach((sample, index) => {
                 if (
                     !(index % renderEveryNthSample) ||
@@ -48,9 +47,8 @@ const SoundWaveDisplay = ({soundWave, sampleRate, peakIndexes}) => {
             ctx.stroke(wavePath);
 
             // drawing detected peaks as lines:
-            ctx.strokeStyle = "grey";
-            ctx.lineWidth = 1;
             const peakPath = new Path2D();
+            ctx.strokeStyle = "grey";
             indexes.forEach((peak) => {
                 peakPath.moveTo(
                     peak * width,
@@ -66,6 +64,10 @@ const SoundWaveDisplay = ({soundWave, sampleRate, peakIndexes}) => {
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
         setCtx(context);
+
+        window.addEventListener("resize", () => {
+            setWindowWidth(window.innerWidth);
+        });
     }, []);
 
     useEffect(draw, [indexes]);
@@ -74,7 +76,7 @@ const SoundWaveDisplay = ({soundWave, sampleRate, peakIndexes}) => {
         <div className="canvas-container">
             <canvas
                 className="canvas"
-                width={window.innerWidth}
+                width={windowWidth}
                 height={canvasHeight}
                 ref={canvasRef}
             ></canvas>

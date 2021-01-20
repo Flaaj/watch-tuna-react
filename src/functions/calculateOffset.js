@@ -8,7 +8,7 @@ const calculateOffset = (peakIndexes, sampleRate, targetFreq) => {
     }
 
     const n = distances.length;
-    const avg = distances.reduce((a, b) => a + b, 0) / n;
+    const avg = distances.reduce((p, c) => p + c, 0) / n;
     const rms = (distances.reduce((p, c) => p + (c - avg) ** 2, 0) / n) ** 0.5;
     const tolerance = Math.max(avg * 0.02, 3 * rms);
     const filtered = distances.filter(
@@ -16,7 +16,7 @@ const calculateOffset = (peakIndexes, sampleRate, targetFreq) => {
     );
 
     const m = filtered.length;
-    const avg2 = filtered.reduce((a, b) => a + b, 0) / m;
+    const avg2 = filtered.reduce((p, c) => p + c, 0) / m;
 
     const freq = sampleRate / avg2;
     const freqOffset = freq - targetFreq;
