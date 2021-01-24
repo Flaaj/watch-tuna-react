@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import WatchDetails from "../watchDetails/WatchDetails";
 import "./watch.scss";
+import { toggleState } from "../../functions/customStateChangers";
 const Watch = ({
     watchInfo,
     currentWatch,
@@ -8,13 +9,10 @@ const Watch = ({
     user,
     notify,
     firebase,
+    getWatches,
 }) => {
     const { brand, model, name, mechanism, freq, img } = watchInfo;
     const [expanded, setExpanded] = useState(false);
-
-    const toggleState = (setState) => {
-        setState((bool) => !bool);
-    };
 
     return (
         <>
@@ -71,6 +69,7 @@ const Watch = ({
                     user={user}
                     firebase={firebase}
                     notify={notify}
+                    getWatches={getWatches}
                 />
             )}
         </>

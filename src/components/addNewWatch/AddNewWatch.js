@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./addNewWatch.scss";
+import { updateState } from "../../functions/customStateChangers";
 
-const AddNewWatch = ({ firebase, user, setAdding, notify }) => {
+const AddNewWatch = ({ firebase, user, setAdding, notify, getWatches }) => {
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
     const [name, setName] = useState("");
@@ -33,12 +34,9 @@ const AddNewWatch = ({ firebase, user, setAdding, notify }) => {
             .push(watchObject)
             .then(() => {
                 setAdding(false);
+                getWatches();
                 notify("Succesfully added new watch");
             });
-    };
-
-    const updateState = (setState) => ({ target: { value } }) => {
-        setState(value);
     };
 
     return (

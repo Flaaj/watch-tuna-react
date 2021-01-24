@@ -8,8 +8,7 @@ const OffsetDisplay = ({
     firebase,
     currentWatch,
 }) => {
-    
-    const siema = () => {
+    const saveToDatabase = () => {
         const date = new Date().toLocaleString();
         firebase
             .database()
@@ -29,13 +28,13 @@ const OffsetDisplay = ({
                 <div className="row">
                     <button
                         className="offset-display__save-btn"
-                        onClick={siema}
+                        onClick={saveToDatabase}
                     >
                         Save measurement to database
                     </button>
                 </div>
             )}
-            <div className="row">
+            <div className="offset-display__row">
                 <span>Target frequency:</span>
                 <div>
                     {targetFreq
@@ -43,13 +42,13 @@ const OffsetDisplay = ({
                         : "-"}
                 </div>
             </div>
-            <div className="row">
+            <div className="offset-display__row">
                 <span>Measured frequency: </span>
                 <div>
                     {offset && offset[1] ? offset[1].toFixed(8) + "Hz" : "-"}
                 </div>
             </div>
-            <div className="row">
+            <div className="offset-display__row">
                 <span>Calculated offset: </span>
                 <div>
                     {offset && offset[0]

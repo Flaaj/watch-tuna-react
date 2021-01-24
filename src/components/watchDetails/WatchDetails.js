@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./watchDetails.scss";
-const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
+import { updateState, toggleState } from "../../functions/customStateChangers";
+
+const WatchDetails = ({ watchInfo, user, firebase, notify, getWatches }) => {
     const [brand, setBrand] = useState(watchInfo.brand);
     const [model, setModel] = useState(watchInfo.model);
     const [name, setName] = useState(watchInfo.name);
@@ -8,7 +10,9 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
     const [text, setText] = useState(watchInfo.text);
     const [freq, setFreq] = useState(watchInfo.freq);
     const [serviceDate, setServiceDate] = useState(watchInfo.serviceDate);
-    const [futureServiceDate, setFutureServiceDate] = useState(watchInfo.futureServiceDate);
+    const [futureServiceDate, setFutureServiceDate] = useState(
+        watchInfo.futureServiceDate
+    );
     const [img, setImg] = useState(watchInfo.img);
     const [reload, setReload] = useState(false);
     const [measurements, setMeasurements] = useState([]);
@@ -41,6 +45,7 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
             .ref("users/" + user.uid + "/watches/" + watchInfo.watchID)
             .update(watchObject)
             .then(() => {
+                getWatches();
                 notify("Watch details actualized.");
             })
             .catch((err) => {
@@ -55,6 +60,7 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
             .ref("users/" + user.uid + "/watches/" + watchInfo.watchID)
             .remove()
             .then(() => {
+                getWatches();
                 notify("Watch deleted");
             })
             .catch((err) => {
@@ -66,7 +72,14 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
     const deleteMeasurement = (id) => {
         firebase
             .database()
-            .ref("users/" + user.uid + "/watches/" + watchInfo.watchID + "/measurements/" + id)
+            .ref(
+                "users/" +
+                    user.uid +
+                    "/watches/" +
+                    watchInfo.watchID +
+                    "/measurements/" +
+                    id
+            )
             .remove()
             .then(() => {
                 notify("Measurement deleted");
@@ -78,28 +91,35 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
             });
     };
 
-    const toggleState = (setState) => {
-        setState((bool) => !bool);
-    };
-
-    const updateState = (setState) => ({ target: { value } }) => {
-        setState(value);
-    };
-
     return (
         <div className="watch-details">
-            <form className="watch-details__edit" onSubmit={updateWatchInfo}>
+            <form className="watch-details__form" onSubmit={updateWatchInfo}>
                 <div className="watch-details__row">
                     <label htmlFor="brand">Brand: </label>
-                    <input id="brand" type="text" value={brand} onChange={updateState(setBrand)} />
+                    <input
+                        id="brand"
+                        type="text"
+                        value={brand}
+                        onChange={updateState(setBrand)}
+                    />
                 </div>
                 <div className="watch-details__row">
                     <label htmlFor="model">Model: </label>
-                    <input id="model" type="text" value={model} onChange={updateState(setModel)} />
+                    <input
+                        id="model"
+                        type="text"
+                        value={model}
+                        onChange={updateState(setModel)}
+                    />
                 </div>
                 <div className="watch-details__row">
                     <label htmlFor="name">Name: </label>
-                    <input id="name" type="text" value={name} onChange={updateState(setName)} />
+                    <input
+                        id="name"
+                        type="text"
+                        value={name}
+                        onChange={updateState(setName)}
+                    />
                 </div>
                 <div className="watch-details__row">
                     <label htmlFor="mechanism">Mechanism: </label>
@@ -120,7 +140,9 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
                     />
                 </div>
                 <div className="watch-details__row">
-                    <label htmlFor="futureServiceDate">Next planned service date: </label>
+                    <label htmlFor="futureServiceDate">
+                        Next planned service date:{" "}
+                    </label>
                     <input
                         id="futureServiceDate"
                         type="date"
@@ -152,13 +174,20 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
                 </div>
                 <div className="watch-details__row">
                     <label htmlFor="img">Img url:</label>
-                    <input type="text" id="img" value={img} onChange={updateState(setImg)} />
+                    <input
+                        type="text"
+                        id="img"
+                        value={img}
+                        onChange={updateState(setImg)}
+                    />
                 </div>
                 <button type="submit" className="watch-details__save-btn">
                     Save changes
                 </button>
             </form>
-            <h3 className="watch-details__measuremenents-heading">Past measurements:</h3>
+            <h3 className="watch-details__measurements-heading">
+                Past measurements:
+            </h3>
             <ul className="watch-details__measurements-list">
                 {measurements.length > 0
                     ? measurements.map(({ id, date, result }) => (
@@ -180,7 +209,10 @@ const WatchDetails = ({ watchInfo, user, firebase, notify }) => {
                     : "-"}
             </ul>
 
-            <button onClick={deleteWatch} className="watch-details__delete-watch">
+            <button
+                onClick={deleteWatch}
+                className="watch-details__delete-watch"
+            >
                 Delete this watch
             </button>
         </div>

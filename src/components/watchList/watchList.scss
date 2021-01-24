@@ -16,6 +16,12 @@
         font-size: 40px;
         color: white;
 
+        &--sort {
+            left: 0;
+            transform: translate(70%, -200%);
+            font-size: 20px;
+        }
+
         &--add-new {
             transform: translate(50%, -200%);
             a {
@@ -28,6 +34,10 @@
             right: 0;
             transform: translate(-70%, -200%);
             font-size: 20px;
+        }
+
+        &:hover {
+            background-color: rgb(173, 217, 235);
         }
     }
 

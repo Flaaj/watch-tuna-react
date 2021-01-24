@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./landingScreen.scss";
+import { updateState, toggleState } from "../../functions/customStateChangers";
 
 const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
     const [showSignUpForm, setShowSignUpForm] = useState(false);
@@ -72,17 +73,13 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                     <input
                         type="email"
                         value={logInEmail}
-                        onChange={({ target: { value } }) =>
-                            setLogInEmail(value)
-                        }
+                        onChange={updateState(setLogInEmail)}
                         placeholder="E-mail address"
                     />
                     <input
                         type="password"
                         value={logInPassword}
-                        onChange={({ target: { value } }) =>
-                            setLogInPassword(value)
-                        }
+                        onChange={updateState(setLogInPassword)}
                         placeholder="Password"
                     />
                     <button
@@ -93,9 +90,7 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                     </button>
                     <span>Don't have an account yet? </span>
                     <button
-                        onClick={() => {
-                            setShowSignUpForm(true);
-                        }}
+                        onClick={() => toggleState(setShowSignUpForm)}
                         className="landing-screen__btn"
                     >
                         Create new account
@@ -111,18 +106,14 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                         type="email"
                         id="email"
                         value={signUpEmail}
-                        onChange={({ target: { value } }) =>
-                            setSignUpEmail(value)
-                        }
+                        onChange={updateState(setSignUpEmail)}
                         placeholder="E-mail address"
                     />
                     <input
                         type="password"
                         id="password"
                         value={signUpPassword}
-                        onChange={({ target: { value } }) =>
-                            setSignUpPassword(value)
-                        }
+                        onChange={updateState(setSignUpPassword)}
                         placeholder="Password"
                     />
                     <button
@@ -132,9 +123,7 @@ const LandingScreen = ({ user, setUser, firebase, setInitialized, notify }) => {
                         Submit
                     </button>
                     <button
-                        onClick={() => {
-                            setShowSignUpForm(false);
-                        }}
+                        onClick={() => toggleState(setShowSignUpForm)}
                         className="landing-screen__btn"
                     >
                         Cancel
